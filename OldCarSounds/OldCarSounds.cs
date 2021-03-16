@@ -130,12 +130,12 @@ namespace OldCarSounds
                if (_satsumaDrivetrain.rpm > 1500)
                {
                   _satsumaSoundController.engineThrottlePitchFactor = 1.4f;
-                  _satsumaSoundController.engineNoThrottlePitchFactor = 1.4f;
+                  _satsumaSoundController.engineNoThrottlePitchFactor = 1.2f;
                }
                else
                {
                   _satsumaSoundController.engineThrottlePitchFactor = 1.6f;
-                  _satsumaSoundController.engineNoThrottlePitchFactor = 1.6f;
+                  _satsumaSoundController.engineNoThrottlePitchFactor = 1.3f;
                }
             }
          }
