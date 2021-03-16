@@ -19,8 +19,6 @@ namespace OldCarSounds
       private SoundController _satsumaSoundController;
       private Drivetrain _satsumaDrivetrain;
 
-      private GameObject _carBuildingSoundMan;
-
       // Set this to true if you will be load custom assets from Assets folder.
       // This will create subfolder in Assets folder for your mod.
       public override bool UseAssetsFolder => true;
@@ -44,8 +42,10 @@ namespace OldCarSounds
             catch (Exception)
             {
                ModConsole.Error("You probably did not drag the assets folder to the mods! Disabling mod now!");
+               PrintF("Missing assets", "error");
                throw new MissingComponentException("Completely missing assets file.");
             }
+
             PrintF("Loaded Asset Bundle (holding the audio files.)", "load");
             _clip1 = assetBundle.LoadAsset("idle_ulko_pako.wav") as AudioClip;
             PrintF("Loaded exhaust sound.", "load");
@@ -59,18 +59,16 @@ namespace OldCarSounds
             {
                ModConsole.Error("You have an older version of the assets file!");
                ModConsole.Error("Version 1 detected, latest version is 2!");
+               PrintF("Outdated version of oldsound.unity3d (assemble.wav) not found", "error");
                throw new MissingComponentException("An older version of the assets file was detected.");
             }
+
             PrintF("Loaded assemble/disassemble sound.", "load");
             _satsuma = GameObject.Find("SATSUMA(557kg, 248)");
             _satsumaSoundController = _satsuma.GetComponent<SoundController>();
             _satsumaSoundController.engineNoThrottle = _clip2;
             _satsumaSoundController.engineThrottle = _clip2;
             PrintF("Applied sound effects for engine.", "load");
-            _satsumaSoundController.engineThrottlePitchFactor = 1.4f;
-            _satsumaSoundController.engineThrottleVolume = 2f;
-            _satsumaSoundController.engineNoThrottlePitchFactor = 1.4f;
-            PrintF("Applied pitches for the engine to sound similarly as the old version did.", "load");
             _satsuma.transform.GetChild(40).GetComponent<AudioSource>().clip = _clip2;
             _satsuma.transform.GetChild(41).GetComponent<AudioSource>().clip = _clip2;
             PrintF("Applied extra sound effects.", "load");
@@ -87,9 +85,24 @@ namespace OldCarSounds
             PrintF("Loading audio pitch change...", "load");
             _satsumaDrivetrain = _satsuma.GetComponent<Drivetrain>();
             PrintF("Loading old sounds for removing/attaching parts", "load");
-            _carBuildingSoundMan = GameObject.Find("MasterAudio/CarBuilding");
-            _carBuildingSoundMan.transform.GetChild(2).GetComponent<AudioSource>().clip = _clip3;
-            _carBuildingSoundMan.transform.GetChild(3).GetComponent<AudioSource>().clip = _clip3;
+            GameObject go1 = GameObject.Find("MasterAudio");
+            foreach (var var1 in go1.GetComponentsInChildren<AudioSource>())
+            {
+               if (var1 == null) continue;
+               if (var1.clip == null) continue;
+               if (var1.clip.name == "disassemble")
+               {
+                  var1.clip = _clip3;
+                  PrintF("Found 'disassemble.wav' under " + var1.transform.parent.name);
+               }
+
+               if (var1.clip.name == "assemble")
+               {
+                  var1.clip = _clip3;
+                  PrintF("Found 'assemble.wav' under " + var1.transform.parent.name);
+               }
+            }
+
             PrintF("Fully loaded!", "load");
          }
          catch (Exception e)
@@ -117,7 +130,7 @@ namespace OldCarSounds
       {
       }
 
-      private float _time1 = 0f;
+      private float _time1;
 
       public override void Update()
       {
@@ -127,15 +140,35 @@ namespace OldCarSounds
             if (_time1 > 0.5f)
             {
                _time1 = 0f;
-               if (_satsumaDrivetrain.rpm > 1500)
+               if (_satsumaDrivetrain.rpm > 8000)
                {
+                  // Above 8000 rpm
+                  _satsumaSoundController.engineThrottlePitchFactor = 1.5f;
+                  _satsumaSoundController.engineNoThrottlePitchFactor = 0.75f;
+               }
+               else if (_satsumaDrivetrain.rpm > 6000)
+               {
+                  // Between 6000 and 8000 rpm
+                  _satsumaSoundController.engineThrottlePitchFactor = 1.45f;
+                  _satsumaSoundController.engineNoThrottlePitchFactor = 0.67f;
+               }
+               else if (_satsumaDrivetrain.rpm > 4000)
+               {
+                  // Between 4000 and 6000 rpm
                   _satsumaSoundController.engineThrottlePitchFactor = 1.4f;
-                  _satsumaSoundController.engineNoThrottlePitchFactor = 1.4f;
+                  _satsumaSoundController.engineNoThrottlePitchFactor = 0.9f;
+               }
+               else if(_satsumaDrivetrain.rpm > 2000)
+               {
+                  // Between 2000 and 4000 rpm
+                  _satsumaSoundController.engineThrottlePitchFactor = 1.5f;
+                  _satsumaSoundController.engineNoThrottlePitchFactor = 1;
                }
                else
                {
+                  // Under 2000 rpm
                   _satsumaSoundController.engineThrottlePitchFactor = 1.6f;
-                  _satsumaSoundController.engineNoThrottlePitchFactor = 1.6f;
+                  _satsumaSoundController.engineNoThrottlePitchFactor = 1.1f;
                }
             }
          }
@@ -165,9 +198,9 @@ namespace OldCarSounds
                .Append(text);
             writer.WriteLine(builder.ToString());
             writer.Close();
-            #if DEBUG
+#if DEBUG
             ModConsole.Print(writer.ToString());
-            #endif
+#endif
          }
          catch (Exception)
          {
