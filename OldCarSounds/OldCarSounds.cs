@@ -19,8 +19,6 @@ namespace OldCarSounds
       private SoundController _satsumaSoundController;
       private Drivetrain _satsumaDrivetrain;
 
-      private GameObject _carBuildingSoundMan;
-
       // Set this to true if you will be load custom assets from Assets folder.
       // This will create subfolder in Assets folder for your mod.
       public override bool UseAssetsFolder => true;
@@ -46,6 +44,7 @@ namespace OldCarSounds
                ModConsole.Error("You probably did not drag the assets folder to the mods! Disabling mod now!");
                throw new MissingComponentException("Completely missing assets file.");
             }
+
             PrintF("Loaded Asset Bundle (holding the audio files.)", "load");
             _clip1 = assetBundle.LoadAsset("idle_ulko_pako.wav") as AudioClip;
             PrintF("Loaded exhaust sound.", "load");
@@ -61,6 +60,7 @@ namespace OldCarSounds
                ModConsole.Error("Version 1 detected, latest version is 2!");
                throw new MissingComponentException("An older version of the assets file was detected.");
             }
+
             PrintF("Loaded assemble/disassemble sound.", "load");
             _satsuma = GameObject.Find("SATSUMA(557kg, 248)");
             _satsumaSoundController = _satsuma.GetComponent<SoundController>();
@@ -87,9 +87,22 @@ namespace OldCarSounds
             PrintF("Loading audio pitch change...", "load");
             _satsumaDrivetrain = _satsuma.GetComponent<Drivetrain>();
             PrintF("Loading old sounds for removing/attaching parts", "load");
-            _carBuildingSoundMan = GameObject.Find("MasterAudio/CarBuilding");
-            _carBuildingSoundMan.transform.GetChild(2).GetComponent<AudioSource>().clip = _clip3;
-            _carBuildingSoundMan.transform.GetChild(3).GetComponent<AudioSource>().clip = _clip3;
+            GameObject go1 = GameObject.Find("MasterAudio/CarBuilding");
+            foreach (var var1 in go1.GetComponentsInChildren<AudioSource>())
+            {
+               if (var1 == null) continue;
+               if (var1.clip == null) continue;
+               if (var1.clip.name == "disassemble")
+               {
+                  var1.clip = _clip3;
+               }
+
+               if (var1.clip.name == "assemble")
+               {
+                  var1.clip = _clip3;
+               }
+            }
+
             PrintF("Fully loaded!", "load");
          }
          catch (Exception e)
@@ -117,7 +130,7 @@ namespace OldCarSounds
       {
       }
 
-      private float _time1 = 0f;
+      private float _time1;
 
       public override void Update()
       {
@@ -130,12 +143,12 @@ namespace OldCarSounds
                if (_satsumaDrivetrain.rpm > 1500)
                {
                   _satsumaSoundController.engineThrottlePitchFactor = 1.4f;
-                  _satsumaSoundController.engineNoThrottlePitchFactor = 0.7f;
+                  _satsumaSoundController.engineNoThrottlePitchFactor = 0.5f;
                }
                else
                {
                   _satsumaSoundController.engineThrottlePitchFactor = 1.6f;
-                  _satsumaSoundController.engineNoThrottlePitchFactor = 0.5f;
+                  _satsumaSoundController.engineNoThrottlePitchFactor = 0.7f;
                }
             }
          }
@@ -165,9 +178,9 @@ namespace OldCarSounds
                .Append(text);
             writer.WriteLine(builder.ToString());
             writer.Close();
-            #if DEBUG
+#if DEBUG
             ModConsole.Print(writer.ToString());
-            #endif
+#endif
          }
          catch (Exception)
          {
