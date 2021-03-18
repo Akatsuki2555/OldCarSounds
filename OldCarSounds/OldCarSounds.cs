@@ -130,46 +130,40 @@ namespace OldCarSounds
       {
       }
 
-      private float _time1;
 
       public override void Update()
       {
          try
          {
-            _time1 += Time.deltaTime;
-            if (_time1 > 0.5f)
+            if (_satsumaDrivetrain.rpm > 8000)
             {
-               _time1 = 0f;
-               if (_satsumaDrivetrain.rpm > 8000)
-               {
-                  // Above 8000 rpm
-                  _satsumaSoundController.engineThrottlePitchFactor = 1.5f;
-                  _satsumaSoundController.engineNoThrottlePitchFactor = 0.75f;
-               }
-               else if (_satsumaDrivetrain.rpm > 6000)
-               {
-                  // Between 6000 and 8000 rpm
-                  _satsumaSoundController.engineThrottlePitchFactor = 1.45f;
-                  _satsumaSoundController.engineNoThrottlePitchFactor = 0.67f;
-               }
-               else if (_satsumaDrivetrain.rpm > 4000)
-               {
-                  // Between 4000 and 6000 rpm
-                  _satsumaSoundController.engineThrottlePitchFactor = 1.4f;
-                  _satsumaSoundController.engineNoThrottlePitchFactor = 0.9f;
-               }
-               else if(_satsumaDrivetrain.rpm > 2000)
-               {
-                  // Between 2000 and 4000 rpm
-                  _satsumaSoundController.engineThrottlePitchFactor = 1.5f;
-                  _satsumaSoundController.engineNoThrottlePitchFactor = 1;
-               }
-               else
-               {
-                  // Under 2000 rpm
-                  _satsumaSoundController.engineThrottlePitchFactor = 1.6f;
-                  _satsumaSoundController.engineNoThrottlePitchFactor = 1.1f;
-               }
+               // Above 8000 rpm
+               _satsumaSoundController.engineThrottlePitchFactor = 1.5f;
+               _satsumaSoundController.engineNoThrottlePitchFactor = 0.65f;
+            }
+            else if (_satsumaDrivetrain.rpm > 6000)
+            {
+               // Between 6000 and 8000 rpm
+               _satsumaSoundController.engineThrottlePitchFactor = 1.45f;
+               _satsumaSoundController.engineNoThrottlePitchFactor = 0.7f;
+            }
+            else if (_satsumaDrivetrain.rpm > 4000)
+            {
+               // Between 4000 and 6000 rpm
+               _satsumaSoundController.engineThrottlePitchFactor = 1.4f;
+               _satsumaSoundController.engineNoThrottlePitchFactor = 0.8f;
+            }
+            else if (_satsumaDrivetrain.rpm > 2000)
+            {
+               // Between 2000 and 4000 rpm
+               _satsumaSoundController.engineThrottlePitchFactor = 1.5f;
+               _satsumaSoundController.engineNoThrottlePitchFactor = 1;
+            }
+            else
+            {
+               // Under 2000 rpm
+               _satsumaSoundController.engineThrottlePitchFactor = 1.6f;
+               _satsumaSoundController.engineNoThrottlePitchFactor = 1.1f;
             }
          }
          catch (Exception)
@@ -183,7 +177,7 @@ namespace OldCarSounds
       /// </summary>
       /// <param name="text">Text.</param>
       /// <param name="module">Where the message is coming from. By default it's SYSTEM.</param>
-      /// <exception cref="IOException">Cannot write to desktop.</exception>
+      /// <exception cref="IOException">Cannot write to logs.</exception>
       private void PrintF(string text, string module = "SYSTEM")
       {
          try
@@ -199,7 +193,7 @@ namespace OldCarSounds
             writer.WriteLine(builder.ToString());
             writer.Close();
 #if DEBUG
-            ModConsole.Print(writer.ToString());
+            ModConsole.Print(builder.ToString());
 #endif
          }
          catch (Exception)
