@@ -49,7 +49,7 @@
     <Reference Include="Ionic.Zip, Version=1.9.1.5, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c">
       <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\Ionic.Zip.dll</HintPath>
     </Reference>
-    <Reference Include="MSCLoader, Version=1.1.8.198, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="MSCLoader, Version=1.1.12.210, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\MSCLoader.dll</HintPath>
     </Reference>
     <Reference Include="PlayMaker, Version=1.6.0.0, Culture=neutral, PublicKeyToken=null">
@@ -69,6 +69,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OcsCommand.cs" />
     <Compile Include="OldCarSounds.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
