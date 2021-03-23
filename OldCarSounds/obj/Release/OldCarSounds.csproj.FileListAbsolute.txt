@@ -56,3 +56,5 @@ E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Release\OldCarSounds.cspro
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Release\OldCarSounds.csproj.CoreCompileInputs.cache
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Release\OldCarSounds.csproj.CopyComplete
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Release\OldCarSounds.dll
+E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Release\MSCLoader.dll
+E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Release\NAudio.Flac.dll

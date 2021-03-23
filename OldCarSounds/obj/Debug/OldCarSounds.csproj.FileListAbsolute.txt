@@ -64,3 +64,5 @@ E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\Mono.Security.dll
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\System.Runtime.Serialization.dll
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\MSCLoader.xml
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.csproj.CopyComplete
+E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\MSCLoader.dll
+E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\NAudio.Flac.dll
