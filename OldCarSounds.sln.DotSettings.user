@@ -39,4 +39,11 @@
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=E_003A_005CApps_005CGames_005CMy_0020Summer_0020Car_005CMy_002ESummer_002ECar_002Ev17_002E11_002E2020_002E2_005Cmysummercar_005FData_005CManaged_005CPlayMaker_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=E_003A_005CApps_005CGames_005CMy_0020Summer_0020Car_005CMy_002ESummer_002ECar_002Ev17_002E11_002E2020_002E2_005Cmysummercar_005FData_005CManaged_005CSystem_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=E_003A_005CApps_005CGames_005CMy_0020Summer_0020Car_005CMy_002ESummer_002ECar_002Ev17_002E11_002E2020_002E2_005Cmysummercar_005FData_005CManaged_005CUnityEngine_002Edll/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=E_003A_005CApps_005CGames_005CMy_0020Summer_0020Car_005CMy_002ESummer_002ECar_002Ev17_002E11_002E2020_002E2_005Cmysummercar_005FData_005CManaged_005CUnityEngine_002EUI_002Edll/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=E_003A_005CApps_005CGames_005CMy_0020Summer_0020Car_005CMy_002ESummer_002ECar_002Ev17_002E11_002E2020_002E2_005Cmysummercar_005FData_005CManaged_005CUnityEngine_002EUI_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeEditing/Unity/EnablePerformanceCriticalCodeHighlighting/@EntryValue">False</s:Boolean>
+	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/ActualSeverity/@EntryValue">INFO</s:String>
+	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/FiltersState/=CodeStyle/@EntryIndexedValue">On</s:String>
+	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/FiltersState/=NamingFilter/@EntryIndexedValue">On</s:String>
+	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/FiltersState/=SpellingFilter/@EntryIndexedValue">On</s:String>
+	<s:Boolean x:Key="/Default/Environment/InlayHints/GeneralInlayHintsOptions/EnableInlayHints/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=carkeys/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
