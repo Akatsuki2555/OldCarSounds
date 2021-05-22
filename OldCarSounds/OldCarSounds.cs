@@ -30,11 +30,12 @@ namespace OldCarSounds
         public static SettingToggle disableDoorSoundsSettings;
         public static SettingToggle disableFootSoundsSettings;
         public static SettingToggle oldRPMGaugeSettings;
+        public static SettingToggle changeableWrenchSizeSettings;
 
-        public static SettingSlider shiftDelaySelectionSettings;
-        public static SettingSlider keySoundSelectionSettings;
-        public static SettingSlider selectionSelectionSettings;
-        public static SettingSlider engineSoundsTypeSettings;
+        public static SettingRadioButtons shiftDelaySelectionSettings;
+        public static SettingRadioButtons keySoundSelectionSettings;
+        public static SettingRadioButtons selectionSelectionSettings;
+        public static SettingRadioButtons engineSoundsTypeSettings;
 
         public static bool loadAssembleSound,
             noEngineOverRev,
@@ -109,6 +110,18 @@ namespace OldCarSounds
                 RadioCore.Clips.Add(assetBundle.LoadAsset("song3") as AudioClip);
                 RadioCore.Clips.Add(assetBundle.LoadAsset("song4") as AudioClip);
                 RadioCore.Clips.Add(assetBundle.LoadAsset("song5") as AudioClip);
+
+                // Import custom songs
+                string path = Path.Combine(ModLoader.GetModAssetsFolder(this), "radiosongs");
+                if (File.Exists(path))
+                {
+                    foreach (string name in Directory.GetFiles(path))
+                    {
+                        PrintF("Loading: " + name);
+                        WWW www = new WWW("file:///" + name);
+                        RadioCore.Clips.Add(www.GetAudioClip(true, false));
+                    }
+                }
             }
 
             // Dashboard texture
@@ -187,45 +200,12 @@ namespace OldCarSounds
             disableFootSoundsSettings = modSettings.AddToggle("sounds2", "Disable Foot sounds", disableFootSounds);
             disableDoorSoundsSettings = modSettings.AddToggle("sounds3", "Disable Door sounds", disableDoorSounds);
             oldRPMGaugeSettings = modSettings.AddToggle("rpm", "Old RPM gauge", oldRPMGauge);
-            modSettings.AddHeader($"0 = No change");
-            modSettings.AddHeader($"1 = Old shift delay (BUILD 172)");
-            modSettings.AddHeader($"2 = No shift delay");
-            shiftDelaySelectionSettings = modSettings.AddSlider("shift2", "Shift delay", shiftDelaySelection, 0, 2, 0,
-                float1 =>
-                {
-                    shiftDelaySelectionSettings.Value = Mathf.Round(float1);
-                    shiftDelaySelection = shiftDelaySelectionSettings.ValueInt;
-                });
-            modSettings.AddHeader($"0 = No change");
-            modSettings.AddHeader($"1 = First version (2016)");
-            modSettings.AddHeader($"2 = No key sounds (2014)");
-            keySoundSelectionSettings = modSettings.AddSlider("sounds4", "Key sounds selection", keySoundSelection, 0,
-                2, 0,
-                arg0 =>
-                {
-                    keySoundSelectionSettings.Value = Mathf.Round(arg0);
-                    keySoundSelection = keySoundSelectionSettings.ValueInt;
-                });
+            changeableWrenchSizeSettings = modSettings.AddToggle("wrenchsize", "Changeable Wrench Size", changeableWrenchSize);
 
-            modSettings.AddHeader($"0 = No change");
-            modSettings.AddHeader($"1 = Green selections");
-            modSettings.AddHeader($"2 = Apply just for radio");
-            selectionSelectionSettings = modSettings.AddSlider("selection", "Selection effect", selectionSelection, 0,
-                2,
-                arg0 =>
-                {
-                    selectionSelectionSettings.Value = Mathf.Round(arg0);
-                    selectionSelection = selectionSelectionSettings.ValueInt;
-                });
-            modSettings.AddHeader($"0 = No change");
-            modSettings.AddHeader($"1 = First version (2016)");
-            modSettings.AddHeader($"2 = Old alpha (2014)");
-            engineSoundsTypeSettings = modSettings.AddSlider("sounds5", "Engine sounds type", engineSoundsType, 0, 2, 0,
-                arg0 =>
-                {
-                    engineSoundsTypeSettings.Value = Mathf.Round(arg0);
-                    engineSoundsType = engineSoundsTypeSettings.ValueInt;
-                });
+            shiftDelaySelectionSettings = modSettings.AddRadioButtons("shiftDelay", "Shift delay", shiftDelaySelection, "Default", "Old", "None");
+            keySoundSelectionSettings = modSettings.AddRadioButtons("keysound", "Key sounds", keySoundSelection, "Default", "2016", "None");
+            selectionSelectionSettings = modSettings.AddRadioButtons("selection", "Selection visual", selectionSelection, "Default", "Green boxes");
+            engineSoundsTypeSettings = modSettings.AddRadioButtons("engineSounds", "Engine sounds", engineSoundsType, "Unchanged", "Old (2016)", "Old (2014)");
 
             modSettings.AddButton("reload", "Reload settings", "Reload if in game", () =>
             {
@@ -243,10 +223,10 @@ namespace OldCarSounds
             disableFootSounds = disableFootSoundsSettings.Value;
             disableKnobSounds = disableKnobSoundsSettings.Value;
             oldRPMGauge = oldRPMGaugeSettings.Value;
-            shiftDelaySelection = shiftDelaySelectionSettings.ValueInt;
-            keySoundSelection = keySoundSelectionSettings.ValueInt;
-            selectionSelection = selectionSelectionSettings.ValueInt;
-            engineSoundsType = engineSoundsTypeSettings.ValueInt;
+            shiftDelaySelection = shiftDelaySelectionSettings.Value;
+            keySoundSelection = keySoundSelectionSettings.Value;
+            selectionSelection = selectionSelectionSettings.Value;
+            engineSoundsType = engineSoundsTypeSettings.Value;
         }
 
         public override void ModSettingsClose()
@@ -261,10 +241,12 @@ namespace OldCarSounds
             disableFootSounds = disableFootSoundsSettings.Value;
             disableKnobSounds = disableKnobSoundsSettings.Value;
             oldRPMGauge = oldRPMGaugeSettings.Value;
-            shiftDelaySelection = shiftDelaySelectionSettings.ValueInt;
-            keySoundSelection = keySoundSelectionSettings.ValueInt;
-            selectionSelection = selectionSelectionSettings.ValueInt;
-            engineSoundsType = engineSoundsTypeSettings.ValueInt;
+            changeableWrenchSize = changeableWrenchSizeSettings.Value;
+
+            shiftDelaySelection = shiftDelaySelectionSettings.Value;
+            keySoundSelection = keySoundSelectionSettings.Value;
+            selectionSelection = selectionSelectionSettings.Value;
+            engineSoundsType = engineSoundsTypeSettings.Value;
         }
 
         public override void OnSave()
