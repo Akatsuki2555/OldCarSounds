@@ -36,10 +36,6 @@ G:\VS 2017\AudioLoader\AudioLoader\obj\Debug\AudioLoader.csproj.CoreCompileInput
 G:\VS 2017\AudioLoader\AudioLoader\obj\Debug\AudioLoader.csproj.CopyComplete
 G:\VS 2017\AudioLoader\AudioLoader\obj\Debug\AudioLoader.dll
 G:\VS 2017\AudioLoader\AudioLoader\obj\Debug\AudioLoader.pdb
-E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.csprojAssemblyReference.cache
-E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.csproj.CoreCompileInputs.cache
-E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.dll
-E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.pdb
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\OldCarSounds.dll
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\OldCarSounds.pdb
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\0Harmony.dll
@@ -48,6 +44,7 @@ E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\Assembly-UnityScript
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\cInput.dll
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\ES2.dll
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\Ionic.Zip.dll
+E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\MSCLoader.dll
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\PlayMaker.dll
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\UnityEngine.dll
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\UnityEngine.UI.dll
@@ -60,9 +57,69 @@ E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\MoodkieSecurity.dll
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\NAudio.dll
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\NVorbis.dll
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\Newtonsoft.Json.dll
+E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\NAudio.Flac.dll
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\Mono.Security.dll
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\System.Runtime.Serialization.dll
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\MSCLoader.xml
+E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.csprojAssemblyReference.cache
+E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.csproj.CoreCompileInputs.cache
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.csproj.CopyComplete
-E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\MSCLoader.dll
-E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\NAudio.Flac.dll
+E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.dll
+E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.pdb
+E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.csproj.GenerateResource.cache
+E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.Storage.resources
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\bin\Debug\OldCarSounds.dll
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\bin\Debug\OldCarSounds.pdb
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\bin\Debug\MSCLoader.dll
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\bin\Debug\MSCLoader.Features.dll
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\bin\Debug\Assembly-UnityScript-firstpass.dll
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\bin\Debug\HOTween.dll
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\bin\Debug\Assembly-CSharp-firstpass.dll
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\bin\Debug\UnityScript.Lang.dll
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\bin\Debug\Boo.Lang.dll
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\bin\Debug\MoodkieSecurity.dll
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\bin\Debug\NAudio.dll
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\bin\Debug\NVorbis.dll
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\bin\Debug\Newtonsoft.Json.dll
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\bin\Debug\NAudio.Flac.dll
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\bin\Debug\Mono.Security.dll
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\bin\Debug\System.Runtime.Serialization.dll
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\bin\Debug\MSCLoader.xml
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.csprojAssemblyReference.cache
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.Storage.resources
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.csproj.GenerateResource.cache
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.csproj.CoreCompileInputs.cache
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.csproj.CopyComplete
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.dll
+D:\MLDKYT\GameProjects\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.pdb
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\OldCarSounds.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\OldCarSounds.pdb
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\0Harmony.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\Assembly-CSharp.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\Assembly-UnityScript.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\cInput.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\ES2.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\Ionic.Zip.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\PlayMaker.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\UnityEngine.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\UnityEngine.UI.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\Assembly-UnityScript-firstpass.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\HOTween.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\Assembly-CSharp-firstpass.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\UnityScript.Lang.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\Boo.Lang.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\MoodkieSecurity.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\NAudio.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\NVorbis.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\Newtonsoft.Json.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\NAudio.Flac.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\Mono.Security.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\System.Runtime.Serialization.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Debug\MSCLoader.xml
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.csprojAssemblyReference.cache
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.Storage.resources
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.csproj.GenerateResource.cache
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.csproj.CoreCompileInputs.cache
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.csproj.CopyComplete
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.dll
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Debug\OldCarSounds.pdb

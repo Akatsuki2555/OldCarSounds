@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Costura.Fody.5.2.0\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.5.2.0\build\Costura.Fody.props')"/>
+  <Import Project="..\packages\Costura.Fody.5.2.0\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.5.2.0\build\Costura.Fody.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
@@ -50,8 +50,11 @@
     <Reference Include="Ionic.Zip, Version=1.9.1.5, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c">
       <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\Ionic.Zip.dll</HintPath>
     </Reference>
-    <Reference Include="MSCLoader, Version=1.1.12.210, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\MSCLoader.dll</HintPath>
+    <Reference Include="MSCLoader, Version=1.0.8.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\Games\My.Summer.Car.v25.04.2021\mysummercar_Data\Managed\MSCLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="MSCLoader.Features, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\Games\My.Summer.Car.v25.04.2021\mysummercar_Data\Managed\MSCLoader.Features.dll</HintPath>
     </Reference>
     <Reference Include="PlayMaker, Version=1.6.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\PlayMaker.dll</HintPath>
@@ -62,28 +65,39 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-      <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\UnityEngine.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\UnityEngine.UI.dll</HintPath>
-      </Reference>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
   </ItemGroup>
-    <ItemGroup>
-        <Compile Include="OldCarSounds.cs"/>
-        <Compile Include="Properties\AssemblyInfo.cs"/>
-        <Compile Include="RadioCore.cs"/>
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="packages.config"/>
-    </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
-    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-        <PropertyGroup>
-            <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them. For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
-        </PropertyGroup>
-        <Error Condition="!Exists('..\packages\Costura.Fody.5.2.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.5.2.0\build\Costura.Fody.props'))"/>
-        <Error Condition="!Exists('..\packages\Costura.Fody.5.2.0\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.5.2.0\build\Costura.Fody.targets'))"/>
-    </Target>
-    <Import Project="..\packages\Costura.Fody.5.2.0\build\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.5.2.0\build\Costura.Fody.targets')"/>
+  <ItemGroup>
+    <Compile Include="OldCarSounds.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RadioCore.cs" />
+    <Compile Include="Storage.cs" />
+    <Compile Include="Stuff\RPMGauge.cs" />
+    <Compile Include="Stuff\SatsumaOCS.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Resources\oldsound.unity3d" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Storage.resx">
+      <DependentUpon>Storage.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Storage.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them. For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Costura.Fody.5.2.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.5.2.0\build\Costura.Fody.props'))" />
+    <Error Condition="!Exists('..\packages\Costura.Fody.5.2.0\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.5.2.0\build\Costura.Fody.targets'))" />
+  </Target>
+  <Import Project="..\packages\Costura.Fody.5.2.0\build\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.5.2.0\build\Costura.Fody.targets')" />
 </Project>

@@ -20,7 +20,7 @@ namespace OldCarSounds
          GameObject a = GameObject.Find("dashboard meters(Clone)");
          Transform b = transform;
          b.parent = a.transform;
-         b.position = a.transform.position + new Vector3(0.283f, 0.082f, 0.033f);
+         b.position = a.transform.position + new Vector3(0.283f, 0.082f, 0.133f);
          b.rotation = a.transform.rotation;
          b.localPosition = new Vector3(-0.27982f, 0.037146f, 0.0317383f);
          // Add sound
@@ -28,9 +28,6 @@ namespace OldCarSounds
          _source.clip = Clips[0];
          _source.loop = true;
          _source.Play();
-         // Set some variables
-         OldCarSounds.VolumeKnob = transform.Find("trigger_ocs_volume1").gameObject;
-         OldCarSounds.PowerKnob = transform.Find("trigger_ocs_power1").gameObject;
          // Change the name to something friendly
          gameObject.name = "ocs_old_radio";
       }
@@ -74,13 +71,13 @@ namespace OldCarSounds
 
       public void IncreaseVolume()
       {
-         volume += 0.01f;
+         volume += 0.05f;
          if (volume > 1) volume = 1;
       }
 
       public void DecreaseVolume()
       {
-         volume -= 0.01f;
+         volume -= 0.05f;
          if (volume < 0) volume = 0;
       }
 
@@ -95,7 +92,7 @@ namespace OldCarSounds
       public void NextClip()
       {
          _currentClipIndex++;
-         if (_currentClipIndex > Clips.Count) _currentClipIndex = 0;
+         if (_currentClipIndex > Clips.Count - 1) _currentClipIndex = 0;
          _source.clip = Clips[_currentClipIndex];
          _source.Play();
       }
