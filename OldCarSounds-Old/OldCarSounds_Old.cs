@@ -1,16 +1,16 @@
-﻿using HutongGames.PlayMaker;
-using MSCLoader;
-using OldCarSounds;
-using OldCarSounds.Stuff;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using HutongGames.PlayMaker;
+using MSCLoader;
+using OldCarSounds_Old.Stuff;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
-namespace OldCarSounds
+namespace OldCarSounds_Old
 {
     public class OldCarSounds_Old : Mod
     {
@@ -29,6 +29,7 @@ namespace OldCarSounds
         public static Settings selectionSelectionSettings;
         public static Settings engineSoundsTypeSettings;
         public static Settings changeableWrenchSizeSettings;
+        public static Settings hasViewedPrompt;
         public static bool loadAssembleSound;
         public static bool noEngineOverRev;
         public static bool oldRadioSongs;
@@ -40,6 +41,7 @@ namespace OldCarSounds
         public static bool noDeath;
         public static bool oldRPMGauge;
         public static bool changeableWrenchSize;
+        public static bool viewedPrompt;
         public static int shiftDelaySelection;
         public static int keySoundSelection;
         public static int selectionSelection;
@@ -59,18 +61,18 @@ namespace OldCarSounds
         public static bool loadGameOnMenu;
 
         public List<PlayMakerFSM> fsmsAntiDeath;
-
-        private Stopwatch stopwatch;
         private Material noSel;
 
-        public override string ID => "OldCarSounds"; //Your mod ID (unique)
-        public override string Name => "Old Car Sounds"; //You mod name
+        private Stopwatch stopwatch;
+
+        public override string ID => nameof(OldCarSounds_Old); //Your mod ID (unique)
+        public override string Name => "Old Car Sounds (OLD MODLoader)"; //You mod name
         public override string Author => "MLDKYT"; //Your Username
-        public override string Version => "1.0"; //Version
+        public override string Version => "1.4.0"; //Version
 
         // Set this to true if you will be load custom assets from Assets folder.
         // This will create subfolder in Assets folder for your mod.
-        public override bool UseAssetsFolder => false;
+        public override bool UseAssetsFolder => true;
 
         public override void OnNewGame()
         {
@@ -115,14 +117,12 @@ namespace OldCarSounds
                 // Import custom songs
                 string path = Path.Combine(ModLoader.GetModAssetsFolder(this), "radiosongs");
                 if (File.Exists(path))
-                {
                     foreach (string name in Directory.GetFiles(path))
                     {
                         PrintF("Loading: " + name);
                         WWW www = new WWW("file:///" + name);
                         RadioCore.Clips.Add(www.GetAudioClip(true, false));
                     }
-                }
             }
 
             // Dashboard texture
@@ -156,8 +156,8 @@ namespace OldCarSounds
             if (noDeath)
             {
                 PrintF("Disabling death...", "load");
-                List<PlayMakerFSM> fsms = new List<PlayMakerFSM>(UnityEngine.Object.FindObjectsOfType<PlayMakerFSM>());
-                List<PlayMakerFSM> filteredFsms = new List<PlayMakerFSM>();
+                var fsms = new List<PlayMakerFSM>(Object.FindObjectsOfType<PlayMakerFSM>());
+                var filteredFsms = new List<PlayMakerFSM>();
                 foreach (PlayMakerFSM playMakerFsm in fsms)
                 {
                     if (playMakerFsm == null) continue;
@@ -175,10 +175,7 @@ namespace OldCarSounds
             }
 
             // Old RPM Gauge
-            if (oldRPMGauge)
-            {
-                GameObject.Find("rpm gauge").AddComponent<RPMGauge>();
-            }
+            if (oldRPMGauge) GameObject.Find("rpm gauge").AddComponent<RPMGauge>();
 
 
             // Create a new instance of stopwatch
@@ -191,45 +188,45 @@ namespace OldCarSounds
 
         public override void ModSettings()
         {
-            noDeathSetting = new Settings("noDeath", "No Death", false, new Action(this.UpdateAllSettings));
-            assembleSounds = new Settings("assembleSounds", "Assemble Sounds", false, new Action(this.UpdateAllSettings));
-            disableDoorSoundsSettings = new Settings("doorSounds", "Disable Door Sounds", false, new Action(this.UpdateAllSettings));
-            disableFootSoundsSettings = new Settings("footSounds", "Disable Foot Sounds", false, new Action(this.UpdateAllSettings));
-            disableKnobSoundsSettings = new Settings("knobSounds", "Disable Knob Sounds", false, new Action(this.UpdateAllSettings));
-            noEngineOverrev = new Settings("noEngineOverrev", "No Engine Overreving", false, new Action(this.UpdateAllSettings));
-            oldDashTexturesSettings = new Settings("oldDash", "Old Dashboard", false, new Action(this.UpdateAllSettings));
-            infoTextSettings = new Settings("info", "Information Text", false, new Action(this.UpdateAllSettings));
-            oldRadioSongsSettings = new Settings("radio", "Old Radio", false, new Action(this.UpdateAllSettings));
-            shiftDelaySelectionSettings = new Settings("shiftDelay", "Shift Delay Selection", 0, new Action(this.UpdateAllSettings));
-            keySoundSelectionSettings = new Settings("keySound", "Key Sound Selection", 0, new Action(this.UpdateAllSettings));
-            selectionSelectionSettings = new Settings("selection", "Selections Settings", 0, new Action(this.UpdateAllSettings));
-            engineSoundsTypeSettings = new Settings("sounds", "Engine Sounds Type", 0, new Action(this.UpdateAllSettings));
-            oldRPMGaugeSettings = new Settings("rpmgauge", "Old RPM Gauge", false, new Action(this.UpdateAllSettings));
-            changeableWrenchSizeSettings = new Settings("wrenchsizechange", "Changeable Wrench Size", false, new Action(this.UpdateAllSettings));
-            this.UpdateAllSettings();
-            Settings.AddSlider(this, shiftDelaySelectionSettings, 0, 2, new string[]
+            noDeathSetting = new Settings("noDeath", "No Death", false, UpdateAllSettings);
+            assembleSounds = new Settings("assembleSounds", "Assemble Sounds", false, UpdateAllSettings);
+            disableDoorSoundsSettings = new Settings("doorSounds", "Disable Door Sounds", false, UpdateAllSettings);
+            disableFootSoundsSettings = new Settings("footSounds", "Disable Foot Sounds", false, UpdateAllSettings);
+            disableKnobSoundsSettings = new Settings("knobSounds", "Disable Knob Sounds", false, UpdateAllSettings);
+            noEngineOverrev = new Settings("noEngineOverrev", "No Engine Overreving", false, UpdateAllSettings);
+            oldDashTexturesSettings = new Settings("oldDash", "Old Dashboard", false, UpdateAllSettings);
+            infoTextSettings = new Settings("info", "Information Text", false, UpdateAllSettings);
+            oldRadioSongsSettings = new Settings("radio", "Old Radio", false, UpdateAllSettings);
+            shiftDelaySelectionSettings = new Settings("shiftDelay", "Shift Delay Selection", 0, UpdateAllSettings);
+            keySoundSelectionSettings = new Settings("keySound", "Key Sound Selection", 0, UpdateAllSettings);
+            selectionSelectionSettings = new Settings("selection", "Selections Settings", 0, UpdateAllSettings);
+            engineSoundsTypeSettings = new Settings("sounds", "Engine Sounds Type", 0, UpdateAllSettings);
+            oldRPMGaugeSettings = new Settings("rpmgauge", "Old RPM Gauge", false, UpdateAllSettings);
+            changeableWrenchSizeSettings = new Settings("wrenchsizechange", "Changeable Wrench Size", false, UpdateAllSettings);
+            UpdateAllSettings();
+            Settings.AddSlider(this, shiftDelaySelectionSettings, 0, 2, new[]
             {
-            "No change",
-            "Build 172",
-            "No delay"
+                "No change",
+                "Build 172",
+                "No delay"
             });
-            Settings.AddSlider(this, keySoundSelectionSettings, 0, 2, new string[]
+            Settings.AddSlider(this, keySoundSelectionSettings, 0, 2, new[]
             {
-            "No change",
-            "Old key sounds (2016)",
-            "No key sounds (2014)"
+                "No change",
+                "Old key sounds (2016)",
+                "No key sounds (2014)"
             });
-            Settings.AddSlider(this, selectionSelectionSettings, 0, 2, new string[]
+            Settings.AddSlider(this, selectionSelectionSettings, 0, 2, new[]
             {
-            "No change in selections",
-            "Green box selections",
-            "Newer selections"
+                "No change in selections",
+                "Green box selections",
+                "Newer selections"
             });
-            Settings.AddSlider(this, engineSoundsTypeSettings, 0, 2, new string[]
+            Settings.AddSlider(this, engineSoundsTypeSettings, 0, 2, new[]
             {
-            "No engine sound change",
-            "Lower pitch (2016)",
-            "Old alpha (2014)"
+                "No engine sound change",
+                "Lower pitch (2016)",
+                "Old alpha (2014)"
             });
             Settings.AddCheckBox(this, noDeathSetting);
             Settings.AddCheckBox(this, assembleSounds);
@@ -246,21 +243,21 @@ namespace OldCarSounds
 
         private void UpdateAllSettings()
         {
-            noDeath = (bool)noDeathSetting.GetValue();
-            loadAssembleSound = (bool)assembleSounds.GetValue();
-            disableDoorSounds = (bool)disableDoorSoundsSettings.GetValue();
-            disableFootSounds = (bool)disableFootSoundsSettings.GetValue();
-            disableKnobSounds = (bool)disableKnobSoundsSettings.GetValue();
-            noEngineOverRev = (bool)noEngineOverrev.GetValue();
-            oldDashTextures = (bool)oldDashTexturesSettings.GetValue();
-            infoText = (bool)infoTextSettings.GetValue();
-            oldRadioSongs = (bool)oldRadioSongsSettings.GetValue();
+            noDeath = (bool) noDeathSetting.GetValue();
+            loadAssembleSound = (bool) assembleSounds.GetValue();
+            disableDoorSounds = (bool) disableDoorSoundsSettings.GetValue();
+            disableFootSounds = (bool) disableFootSoundsSettings.GetValue();
+            disableKnobSounds = (bool) disableKnobSoundsSettings.GetValue();
+            noEngineOverRev = (bool) noEngineOverrev.GetValue();
+            oldDashTextures = (bool) oldDashTexturesSettings.GetValue();
+            infoText = (bool) infoTextSettings.GetValue();
+            oldRadioSongs = (bool) oldRadioSongsSettings.GetValue();
             shiftDelaySelection = int.Parse(shiftDelaySelectionSettings.GetValue().ToString());
             keySoundSelection = int.Parse(keySoundSelectionSettings.GetValue().ToString());
             selectionSelection = int.Parse(selectionSelectionSettings.GetValue().ToString());
             engineSoundsType = int.Parse(engineSoundsTypeSettings.GetValue().ToString());
-            oldRPMGauge = (bool)oldRPMGaugeSettings.GetValue();
-            changeableWrenchSize = (bool)changeableWrenchSizeSettings.GetValue();
+            oldRPMGauge = (bool) oldRPMGaugeSettings.GetValue();
+            changeableWrenchSize = (bool) changeableWrenchSizeSettings.GetValue();
         }
 
         public override void OnSave()
@@ -284,7 +281,7 @@ namespace OldCarSounds
 
             if (ModLoader.GetCurrentScene() == CurrentScene.Game)
             {
-                float fps = (float)Math.Round(1f / Time.unscaledDeltaTime, 2);
+                float fps = (float) Math.Round(1f / Time.unscaledDeltaTime, 2);
                 float wrenchSize = FsmVariables.GlobalVariables.GetFsmFloat("ToolWrenchSize").Value;
                 GUI.Label(new Rect(0, 0, 500, 20), $"FPS: {fps}");
                 GUI.Label(new Rect(0, 20, 500, 20), $"Wrench size: {wrenchSize}");
@@ -471,14 +468,13 @@ namespace OldCarSounds
                     // and we're aiming at the buttons
                     foreach (RaycastHit hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition),
                         3f))
-                    {
                         if (!(SatsumaOCS.radioCoreInstance is null))
                         {
                             // Aiming at the power knob
                             if (hit.collider.gameObject.name == "trigger_ocs_power1")
                             {
                                 // Toggle radio
-                                if (SatsumaOCS.radioCoreInstance.on) SatsumaOCS.radioCoreInstance.DisableRadio();
+                                if (SatsumaOCS.radioCoreInstance.@on) SatsumaOCS.radioCoreInstance.DisableRadio();
                                 else SatsumaOCS.radioCoreInstance.EnableRadio();
                             }
 
@@ -487,26 +483,21 @@ namespace OldCarSounds
                                 // Change song
                                 SatsumaOCS.radioCoreInstance.NextClip();
                         }
-                    }
             }
 
             if (noDeath)
-            {
                 foreach (PlayMakerFSM playMakerFsm in fsmsAntiDeath)
-                {
                     playMakerFsm.enabled = false;
-                }
-            }
         }
 
         /// <summary>
-        ///    Write to logs.
+        ///     Write to logs.
         /// </summary>
         /// <param name="text">Text.</param>
         /// <param name="module">Where the message is coming from. By default it's SYSTEM.</param>
         /// <param name="console">
-        ///    If it should be displayed in the console even if it's not
-        ///    debugging mode.
+        ///     If it should be displayed in the console even if it's not
+        ///     debugging mode.
         /// </param>
         /// <exception cref="IOException">Cannot write to logs.</exception>
         public static void PrintF(
@@ -516,7 +507,7 @@ namespace OldCarSounds
             try
             {
                 string modConfigFolder =
-                    ModLoader.GetModConfigFolder(ModLoader.LoadedMods.First(x => x.ID == nameof(OldCarSounds)));
+                    ModLoader.GetModConfigFolder(ModLoader.LoadedMods.First(x => x.ID == nameof(OldCarSounds_Old)));
                 StreamWriter writer = new StreamWriter(Path.Combine(modConfigFolder, "log.log"), true);
                 StringBuilder builder = new StringBuilder()
                     .Append(DateTime.Now)
@@ -530,17 +521,11 @@ namespace OldCarSounds
                 if (console)
                 {
                     if (module.ToUpper() == "ERROR" || module.ToUpper() == "ERR")
-                    {
                         ModConsole.Error(builder.ToString());
-                    }
                     else if (module.ToUpper() == "WARN" || module.ToUpper() == "WARNING")
-                    {
                         ModConsole.Warning(builder.ToString());
-                    }
                     else
-                    {
                         ModConsole.Print(builder.ToString());
-                    }
                 }
 #if DEBUG
                 else

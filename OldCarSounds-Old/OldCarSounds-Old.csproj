@@ -56,8 +56,8 @@
   <ItemGroup>
     <Compile Include="OldCarSounds_Old.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RadioCore.cs" />
     <Compile Include="Storage.cs" />
+    <Compile Include="Stuff\RadioCore.cs"/>
     <Compile Include="Stuff\RPMGauge.cs" />
     <Compile Include="Stuff\SatsumaOCS.cs" />
   </ItemGroup>

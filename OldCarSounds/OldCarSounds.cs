@@ -14,58 +14,10 @@ namespace OldCarSounds
 {
     public class OldCarSounds : Mod
     {
-        public static AudioClip clip1;
-
-        public static AudioClip clip2;
-
-        public static AudioClip clip3;
-
-        public static SettingToggle noDeathSetting;
-        public static SettingToggle assembleSounds;
-        public static SettingToggle noEngineOverrev;
-        public static SettingToggle oldRadioSongsSettings;
-        public static SettingToggle oldDashTexturesSettings;
-        public static SettingToggle infoTextSettings;
-        public static SettingToggle disableKnobSoundsSettings;
-        public static SettingToggle disableDoorSoundsSettings;
-        public static SettingToggle disableFootSoundsSettings;
-        public static SettingToggle oldRPMGaugeSettings;
-        public static SettingToggle changeableWrenchSizeSettings;
-
-        public static SettingRadioButtons shiftDelaySelectionSettings;
-        public static SettingRadioButtons keySoundSelectionSettings;
-        public static SettingRadioButtons selectionSelectionSettings;
-        public static SettingRadioButtons engineSoundsTypeSettings;
-
-        public static bool loadAssembleSound,
-            noEngineOverRev,
-            oldRadioSongs,
-            oldDashTextures,
-            infoText,
-            disableKnobSounds,
-            disableDoorSounds,
-            disableFootSounds,
-            noDeath,
-            oldRPMGauge,
-            changeableWrenchSize;
-
-        public static int shiftDelaySelection, keySoundSelection, selectionSelection, engineSoundsType;
-
-        public static GameObject radio1, satsuma;
-
-        public static Material material1, selMaterial;
-        public static bool oldDelay;
-
-        public static bool loadGameOnMenu;
-
-        public List<PlayMakerFSM> fsmsAntiDeath;
-
-        private Stopwatch stopwatch;
-        private Material noSel;
         public override string ID => nameof(OldCarSounds);
         public override string Name => "Old Car Sounds";
         public override string Author => "MLDKYT";
-        public override string Version => "1.2.0";
+        public override string Version => "1.4.0";
 
         public override void MenuOnLoad()
         {
@@ -114,14 +66,12 @@ namespace OldCarSounds
                 // Import custom songs
                 string path = Path.Combine(ModLoader.GetModAssetsFolder(this), "radiosongs");
                 if (File.Exists(path))
-                {
                     foreach (string name in Directory.GetFiles(path))
                     {
                         PrintF("Loading: " + name);
                         WWW www = new WWW("file:///" + name);
                         RadioCore.Clips.Add(www.GetAudioClip(true, false));
                     }
-                }
             }
 
             // Dashboard texture
@@ -155,8 +105,8 @@ namespace OldCarSounds
             if (noDeath)
             {
                 PrintF("Disabling death...", "load");
-                List<PlayMakerFSM> fsms = new List<PlayMakerFSM>(Object.FindObjectsOfType<PlayMakerFSM>());
-                List<PlayMakerFSM> filteredFsms = new List<PlayMakerFSM>();
+                var fsms = new List<PlayMakerFSM>(Object.FindObjectsOfType<PlayMakerFSM>());
+                var filteredFsms = new List<PlayMakerFSM>();
                 foreach (PlayMakerFSM playMakerFsm in fsms)
                 {
                     if (playMakerFsm == null) continue;
@@ -174,10 +124,7 @@ namespace OldCarSounds
             }
 
             // Old RPM Gauge
-            if (oldRPMGauge)
-            {
-                GameObject.Find("rpm gauge").AddComponent<RPMGauge>();
-            }
+            if (oldRPMGauge) GameObject.Find("rpm gauge").AddComponent<RPMGauge>();
 
 
             // Create a new instance of stopwatch
@@ -207,6 +154,8 @@ namespace OldCarSounds
             selectionSelectionSettings = modSettings.AddRadioButtons("selection", "Selection visual", selectionSelection, "Default", "Green boxes");
             engineSoundsTypeSettings = modSettings.AddRadioButtons("engineSounds", "Engine sounds", engineSoundsType, "Unchanged", "Old (2016)", "Old (2014)");
 
+            settingNumber1 = modSettings.AddBoolean("viewed", false);
+
             modSettings.AddButton("reload", "Reload settings", "Reload if in game", () =>
             {
                 loadGameOnMenu = true;
@@ -223,10 +172,24 @@ namespace OldCarSounds
             disableFootSounds = disableFootSoundsSettings.Value;
             disableKnobSounds = disableKnobSoundsSettings.Value;
             oldRPMGauge = oldRPMGaugeSettings.Value;
+
             shiftDelaySelection = shiftDelaySelectionSettings.Value;
             keySoundSelection = keySoundSelectionSettings.Value;
             selectionSelection = selectionSelectionSettings.Value;
             engineSoundsType = engineSoundsTypeSettings.Value;
+
+            if (!settingNumber1)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("If you want to add custom songs, ");
+                sb.AppendLine("create a folder called \"radiosongs\"");
+                sb.AppendLine("in your assets folder.");
+
+                ModPrompt prompt = ModPrompt.CreateCustomPrompt();
+                prompt.AddButton("OK", () => { PrintF($"Path to Assets: {ModLoader.GetModAssetsFolder(this)}"); });
+                prompt.Title = "OldCarSounds";
+                prompt.Text = sb.ToString();
+            }
         }
 
         public override void ModSettingsClose()
@@ -247,11 +210,6 @@ namespace OldCarSounds
             keySoundSelection = keySoundSelectionSettings.Value;
             selectionSelection = selectionSelectionSettings.Value;
             engineSoundsType = engineSoundsTypeSettings.Value;
-        }
-
-        public override void OnSave()
-        {
-            ES2.Save(false, "PlayerDead");
         }
 
         public override void OnGUI()
@@ -456,14 +414,13 @@ namespace OldCarSounds
                     // and we're aiming at the buttons
                     foreach (RaycastHit hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition),
                         3f))
-                    {
                         if (!(SatsumaOCS.radioCoreInstance is null))
                         {
                             // Aiming at the power knob
                             if (hit.collider.gameObject.name == "trigger_ocs_power1")
                             {
                                 // Toggle radio
-                                if (SatsumaOCS.radioCoreInstance.on) SatsumaOCS.radioCoreInstance.DisableRadio();
+                                if (SatsumaOCS.radioCoreInstance.@on) SatsumaOCS.radioCoreInstance.DisableRadio();
                                 else SatsumaOCS.radioCoreInstance.EnableRadio();
                             }
 
@@ -472,26 +429,21 @@ namespace OldCarSounds
                                 // Change song
                                 SatsumaOCS.radioCoreInstance.NextClip();
                         }
-                    }
             }
 
             if (noDeath)
-            {
                 foreach (PlayMakerFSM playMakerFsm in fsmsAntiDeath)
-                {
                     playMakerFsm.enabled = false;
-                }
-            }
         }
 
         /// <summary>
-        ///    Write to logs.
+        ///     Write to logs.
         /// </summary>
         /// <param name="text">Text.</param>
         /// <param name="module">Where the message is coming from. By default it's SYSTEM.</param>
         /// <param name="console">
-        ///    If it should be displayed in the console even if it's not
-        ///    debugging mode.
+        ///     If it should be displayed in the console even if it's not
+        ///     debugging mode.
         /// </param>
         /// <exception cref="IOException">Cannot write to logs.</exception>
         public static void PrintF(
@@ -515,17 +467,11 @@ namespace OldCarSounds
                 if (console)
                 {
                     if (module.ToUpper() == "ERROR" || module.ToUpper() == "ERR")
-                    {
                         ModConsole.LogError(builder.ToString());
-                    }
                     else if (module.ToUpper() == "WARN" || module.ToUpper() == "WARNING")
-                    {
                         ModConsole.LogWarning(builder.ToString());
-                    }
                     else
-                    {
                         ModConsole.Log(builder.ToString());
-                    }
                 }
 #if DEBUG
                 else
@@ -565,5 +511,60 @@ namespace OldCarSounds
 
             return s;
         }
+
+        #region Variables
+
+        public static AudioClip clip1;
+
+        public static AudioClip clip2;
+
+        public static AudioClip clip3;
+
+        public static SettingToggle noDeathSetting;
+        public static SettingToggle assembleSounds;
+        public static SettingToggle noEngineOverrev;
+        public static SettingToggle oldRadioSongsSettings;
+        public static SettingToggle oldDashTexturesSettings;
+        public static SettingToggle infoTextSettings;
+        public static SettingToggle disableKnobSoundsSettings;
+        public static SettingToggle disableDoorSoundsSettings;
+        public static SettingToggle disableFootSoundsSettings;
+        public static SettingToggle oldRPMGaugeSettings;
+        public static SettingToggle changeableWrenchSizeSettings;
+
+        public static SettingRadioButtons shiftDelaySelectionSettings;
+        public static SettingRadioButtons keySoundSelectionSettings;
+        public static SettingRadioButtons selectionSelectionSettings;
+        public static SettingRadioButtons engineSoundsTypeSettings;
+
+        public static SettingBoolean settingNumber1;
+
+        public static bool loadAssembleSound,
+            noEngineOverRev,
+            oldRadioSongs,
+            oldDashTextures,
+            infoText,
+            disableKnobSounds,
+            disableDoorSounds,
+            disableFootSounds,
+            noDeath,
+            oldRPMGauge,
+            changeableWrenchSize;
+
+        public static int shiftDelaySelection, keySoundSelection, selectionSelection, engineSoundsType;
+
+        public static GameObject radio1, satsuma;
+
+        public static Material material1, selMaterial;
+        public static bool oldDelay;
+
+        public static bool loadGameOnMenu;
+
+        public List<PlayMakerFSM> fsmsAntiDeath;
+
+        private Stopwatch stopwatch;
+        private Material noSel;
+
+        #endregion
     }
 }
