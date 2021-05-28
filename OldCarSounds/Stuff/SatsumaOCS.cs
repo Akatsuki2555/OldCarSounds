@@ -66,7 +66,7 @@ namespace OldCarSounds.Stuff
             // if the user selected "first release 2016" sounds
             if (OldCarSounds.engineSoundsType == 1)
                 // adjust pitches
-                _soundController.engineThrottlePitchFactor = 1.05f;
+                _soundController.engineThrottlePitchFactor = 1.0f;
 
             OldCarSounds.PrintF("Applied sound effects for engine.", "load");
 

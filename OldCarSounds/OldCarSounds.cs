@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -17,7 +16,7 @@ namespace OldCarSounds
         public override string ID => nameof(OldCarSounds);
         public override string Name => "Old Car Sounds";
         public override string Author => "MLDKYT";
-        public override string Version => "1.4.0";
+        public override string Version => "1.4.1";
 
         public override void MenuOnLoad()
         {
@@ -82,13 +81,12 @@ namespace OldCarSounds
             }
 
             // Selection textures if chosen to
-            if (selectionSelection == 1)
+            if (selectionSelection == 2)
             {
                 PrintF("Loading selection material");
                 selMaterial = assetBundle.LoadAsset<Material>("selection");
+                _noSel = assetBundle.LoadAsset<Material>("nosel");
             }
-
-            noSel = assetBundle.LoadAsset<Material>("nosel");
 
             // Unload the asset bundle to reduce memory usage
             // assets will remain loaded
@@ -101,43 +99,34 @@ namespace OldCarSounds
             PrintF("Adding component for Satsuma", "load");
             satsuma.AddComponent<SatsumaOCS>();
 
-            // Disable death if checked
-            if (noDeath)
+            // Old RPM Gauge
+            if (oldRpmGauge)
             {
-                PrintF("Disabling death...", "load");
-                var fsms = new List<PlayMakerFSM>(Object.FindObjectsOfType<PlayMakerFSM>());
-                var filteredFsms = new List<PlayMakerFSM>();
-                foreach (PlayMakerFSM playMakerFsm in fsms)
+                GameObject object1 = Object.FindObjectsOfType<GameObject>().First(sdf => sdf.name.ToLower().Contains("rpm gauge"));
+                if (object1 != null)
                 {
-                    if (playMakerFsm == null) continue;
-                    if (playMakerFsm.FsmName.ToLower().Contains("death") ||
-                        playMakerFsm.FsmName.ToLower().Contains("die")) filteredFsms.Add(playMakerFsm);
+                    object1.SetActive(true);
+                    object1.AddComponent<RPMGauge>();
                 }
-
-                foreach (PlayMakerFSM playMakerFsm in filteredFsms)
+                else
                 {
-                    PrintF(
-                        $"Disabled death at {GameObjectPath(playMakerFsm.gameObject)} with name {playMakerFsm.FsmName}");
-                    playMakerFsm.enabled = false;
-                    fsmsAntiDeath.Add(playMakerFsm);
+                    PrintF("Old RPM gauge failed to load.");
                 }
             }
-
-            // Old RPM Gauge
-            if (oldRPMGauge) GameObject.Find("rpm gauge").AddComponent<RPMGauge>();
 
 
             // Create a new instance of stopwatch
             PrintF("Starting stopwatch for info text", "load");
-            stopwatch = new Stopwatch();
+            _stopwatch = new Stopwatch();
             // Start a stopwatch for the lake time info thing
-            stopwatch.Start();
+            _stopwatch.Start();
             PrintF("Fully loaded!", "load", true);
         }
 
         public override void ModSettings()
         {
-            noDeathSetting = modSettings.AddToggle("nodeath", "No death", noDeath);
+            modSettings.AddButton("nodeath", "How to get No death", "NoDeath", () => { Process.Start("https://mldkyt.github.io/stuff/OldCarSounds/health-mod-setup.html"); });
+
             assembleSounds = modSettings.AddToggle("assemble", "Assemble sounds", loadAssembleSound);
             noEngineOverrev = modSettings.AddToggle("overrev", "No engine overrev", noEngineOverRev);
             oldRadioSongsSettings = modSettings.AddToggle("radio", "Old radio songs", oldRadioSongs);
@@ -146,7 +135,7 @@ namespace OldCarSounds
             disableKnobSoundsSettings = modSettings.AddToggle("sounds1", "Disable Knob sounds", disableKnobSounds);
             disableFootSoundsSettings = modSettings.AddToggle("sounds2", "Disable Foot sounds", disableFootSounds);
             disableDoorSoundsSettings = modSettings.AddToggle("sounds3", "Disable Door sounds", disableDoorSounds);
-            oldRPMGaugeSettings = modSettings.AddToggle("rpm", "Old RPM gauge", oldRPMGauge);
+            oldRpmGaugeSettings = modSettings.AddToggle("rpm", "Old RPM gauge", oldRpmGauge);
             changeableWrenchSizeSettings = modSettings.AddToggle("wrenchsize", "Changeable Wrench Size", changeableWrenchSize);
 
             shiftDelaySelectionSettings = modSettings.AddRadioButtons("shiftDelay", "Shift delay", shiftDelaySelection, "Default", "Old", "None");
@@ -162,7 +151,6 @@ namespace OldCarSounds
                 Application.LoadLevel(1);
             });
 
-            noDeath = noDeathSetting.Value;
             loadAssembleSound = assembleSounds.Value;
             noEngineOverRev = noEngineOverrev.Value;
             oldRadioSongs = oldRadioSongsSettings.Value;
@@ -171,7 +159,7 @@ namespace OldCarSounds
             disableDoorSounds = disableDoorSoundsSettings.Value;
             disableFootSounds = disableFootSoundsSettings.Value;
             disableKnobSounds = disableKnobSoundsSettings.Value;
-            oldRPMGauge = oldRPMGaugeSettings.Value;
+            oldRpmGauge = oldRpmGaugeSettings.Value;
 
             shiftDelaySelection = shiftDelaySelectionSettings.Value;
             keySoundSelection = keySoundSelectionSettings.Value;
@@ -186,7 +174,11 @@ namespace OldCarSounds
                 sb.AppendLine("in your assets folder.");
 
                 ModPrompt prompt = ModPrompt.CreateCustomPrompt();
-                prompt.AddButton("OK", () => { PrintF($"Path to Assets: {ModLoader.GetModAssetsFolder(this)}"); });
+                prompt.AddButton("OK", () =>
+                {
+                    PrintF($"Path to Assets: {ModLoader.GetModAssetsFolder(this)}", "SYSTEM", true);
+                    settingNumber1.Value = true;
+                });
                 prompt.Title = "OldCarSounds";
                 prompt.Text = sb.ToString();
             }
@@ -194,7 +186,6 @@ namespace OldCarSounds
 
         public override void ModSettingsClose()
         {
-            noDeath = noDeathSetting.Value;
             loadAssembleSound = assembleSounds.Value;
             noEngineOverRev = noEngineOverrev.Value;
             oldRadioSongs = oldRadioSongsSettings.Value;
@@ -203,7 +194,7 @@ namespace OldCarSounds
             disableDoorSounds = disableDoorSoundsSettings.Value;
             disableFootSounds = disableFootSoundsSettings.Value;
             disableKnobSounds = disableKnobSoundsSettings.Value;
-            oldRPMGauge = oldRPMGaugeSettings.Value;
+            oldRpmGauge = oldRpmGaugeSettings.Value;
             changeableWrenchSize = changeableWrenchSizeSettings.Value;
 
             shiftDelaySelection = shiftDelaySelectionSettings.Value;
@@ -229,11 +220,11 @@ namespace OldCarSounds
             {
                 float fps = (float) Math.Round(1f / Time.unscaledDeltaTime, 2);
                 float wrenchSize = FsmVariables.GlobalVariables.GetFsmFloat("ToolWrenchSize").Value;
-                GUI.Label(new Rect(0, 0, 500, 20), $"FPS: {fps}");
-                GUI.Label(new Rect(0, 20, 500, 20), $"Wrench size: {wrenchSize}");
-                GUI.Label(new Rect(0, 40, 500, 20),
-                    $"Lake run current time: {stopwatch.Elapsed.Minutes}:{stopwatch.Elapsed.Seconds}:{stopwatch.Elapsed.Milliseconds}");
-                GUI.Label(new Rect(0, 60, 500, 20), "Lake run last time: ");
+                GUI.Label(new Rect(0, 0, 1000, 20), $"FPS: {fps}");
+                GUI.Label(new Rect(0, 20, 1000, 20), $"Wrench size: {wrenchSize}");
+                GUI.Label(new Rect(0, 40, 1000, 20),
+                    $"Lake run current time: {_stopwatch.Elapsed.Minutes}:{_stopwatch.Elapsed.Seconds}:{_stopwatch.Elapsed.Milliseconds}");
+                GUI.Label(new Rect(0, 60, 1000, 20), "Lake run last time: ");
             }
         }
 
@@ -250,18 +241,17 @@ namespace OldCarSounds
                         if (hit.collider.gameObject.name == SatsumaOCS.PowerKnob.name)
                         {
                             if (selectionSelection == 1)
-                                SatsumaOCS.PowerKnob.GetComponent<Renderer>().material = selMaterial;
-
-                            if (selectionSelection == 2)
                             {
                                 FsmVariables.GlobalVariables.GetFsmString("GUIinteraction").Value = "Radio";
                                 FsmVariables.GlobalVariables.GetFsmBool("GUIuse").Value = true;
                             }
 
+                            if (selectionSelection == 2) SatsumaOCS.PowerKnob.GetComponent<Renderer>().material = selMaterial;
+
                             break;
                         }
 
-                        SatsumaOCS.PowerKnob.GetComponent<Renderer>().material = noSel;
+                        SatsumaOCS.PowerKnob.GetComponent<Renderer>().material = _noSel;
                     }
 
                     // Volume knob
@@ -270,13 +260,12 @@ namespace OldCarSounds
                         if (hit.collider.gameObject.name == SatsumaOCS.VolumeKnob.name)
                         {
                             if (selectionSelection == 1)
-                                SatsumaOCS.VolumeKnob.GetComponent<Renderer>().material = selMaterial;
-
-                            if (selectionSelection == 2)
                             {
                                 FsmVariables.GlobalVariables.GetFsmString("GUIinteraction").Value = "Volume";
                                 FsmVariables.GlobalVariables.GetFsmBool("GUIuse").Value = true;
                             }
+
+                            if (selectionSelection == 2) SatsumaOCS.VolumeKnob.GetComponent<Renderer>().material = selMaterial;
 
                             float wheel = Input.GetAxis("Mouse ScrollWheel");
                             if (wheel >= 0.01f) SatsumaOCS.radioCoreInstance.IncreaseVolume();
@@ -286,7 +275,7 @@ namespace OldCarSounds
                             break;
                         }
 
-                        SatsumaOCS.VolumeKnob.GetComponent<Renderer>().material = noSel;
+                        SatsumaOCS.VolumeKnob.GetComponent<Renderer>().material = _noSel;
                     }
 
                     // Switch knob
@@ -294,10 +283,10 @@ namespace OldCarSounds
                     {
                         if (hit.collider.gameObject.name == SatsumaOCS.SwitchKnob.name)
                         {
-                            if (selectionSelection == 1)
+                            if (selectionSelection == 2)
                                 SatsumaOCS.SwitchKnob.GetComponent<Renderer>().material = selMaterial;
 
-                            if (selectionSelection == 2)
+                            if (selectionSelection == 1)
                             {
                                 FsmVariables.GlobalVariables.GetFsmString("GUIinteraction").Value = "Next";
                                 FsmVariables.GlobalVariables.GetFsmBool("GUIuse").Value = true;
@@ -306,7 +295,7 @@ namespace OldCarSounds
                             break;
                         }
 
-                        SatsumaOCS.SwitchKnob.GetComponent<Renderer>().material = noSel;
+                        SatsumaOCS.SwitchKnob.GetComponent<Renderer>().material = _noSel;
                     }
 
                     if (!(SatsumaOCS.knobChoke is null) && !(SatsumaOCS.triggerChoke is null))
@@ -314,7 +303,7 @@ namespace OldCarSounds
                         // Check other knobs
                         if (hit.collider.gameObject == SatsumaOCS.triggerChoke)
                         {
-                            if (selectionSelection == 1)
+                            if (selectionSelection == 2)
                             {
                                 // Color is now green
                                 SatsumaOCS.knobChoke.GetComponent<Renderer>().material = selMaterial;
@@ -338,7 +327,7 @@ namespace OldCarSounds
                     {
                         if (hit.collider.gameObject == SatsumaOCS.triggerHazard)
                         {
-                            if (selectionSelection == 1)
+                            if (selectionSelection == 2)
                             {
                                 SatsumaOCS.knobHazards.GetComponent<Renderer>().material = selMaterial;
                                 FsmVariables.GlobalVariables.GetFsmString("GUIinteraction").Value = "";
@@ -355,7 +344,7 @@ namespace OldCarSounds
                     {
                         if (hit.collider.gameObject == SatsumaOCS.triggerLightModes)
                         {
-                            if (selectionSelection == 1)
+                            if (selectionSelection == 2)
                             {
                                 SatsumaOCS.knobLights.GetComponent<Renderer>().material = selMaterial;
                                 FsmVariables.GlobalVariables.GetFsmString("GUIinteraction").Value = "";
@@ -372,7 +361,7 @@ namespace OldCarSounds
                     {
                         if (hit.collider.gameObject == SatsumaOCS.triggerButtonWiper)
                         {
-                            if (selectionSelection == 1)
+                            if (selectionSelection == 2)
                             {
                                 SatsumaOCS.knobWipers.GetComponent<Renderer>().material = selMaterial;
                                 FsmVariables.GlobalVariables.GetFsmString("GUIinteraction").Value = "";
@@ -420,7 +409,7 @@ namespace OldCarSounds
                             if (hit.collider.gameObject.name == "trigger_ocs_power1")
                             {
                                 // Toggle radio
-                                if (SatsumaOCS.radioCoreInstance.@on) SatsumaOCS.radioCoreInstance.DisableRadio();
+                                if (SatsumaOCS.radioCoreInstance.on) SatsumaOCS.radioCoreInstance.DisableRadio();
                                 else SatsumaOCS.radioCoreInstance.EnableRadio();
                             }
 
@@ -430,10 +419,6 @@ namespace OldCarSounds
                                 SatsumaOCS.radioCoreInstance.NextClip();
                         }
             }
-
-            if (noDeath)
-                foreach (PlayMakerFSM playMakerFsm in fsmsAntiDeath)
-                    playMakerFsm.enabled = false;
         }
 
         /// <summary>
@@ -446,9 +431,7 @@ namespace OldCarSounds
         ///     debugging mode.
         /// </param>
         /// <exception cref="IOException">Cannot write to logs.</exception>
-        public static void PrintF(
-            string text, string module = "SYSTEM",
-            bool console = false)
+        public static void PrintF(string text, string module = "SYSTEM", bool console = false)
         {
             try
             {
@@ -520,7 +503,6 @@ namespace OldCarSounds
 
         public static AudioClip clip3;
 
-        public static SettingToggle noDeathSetting;
         public static SettingToggle assembleSounds;
         public static SettingToggle noEngineOverrev;
         public static SettingToggle oldRadioSongsSettings;
@@ -529,7 +511,7 @@ namespace OldCarSounds
         public static SettingToggle disableKnobSoundsSettings;
         public static SettingToggle disableDoorSoundsSettings;
         public static SettingToggle disableFootSoundsSettings;
-        public static SettingToggle oldRPMGaugeSettings;
+        public static SettingToggle oldRpmGaugeSettings;
         public static SettingToggle changeableWrenchSizeSettings;
 
         public static SettingRadioButtons shiftDelaySelectionSettings;
@@ -547,8 +529,7 @@ namespace OldCarSounds
             disableKnobSounds,
             disableDoorSounds,
             disableFootSounds,
-            noDeath,
-            oldRPMGauge,
+            oldRpmGauge,
             changeableWrenchSize;
 
         public static int shiftDelaySelection, keySoundSelection, selectionSelection, engineSoundsType;
@@ -560,10 +541,8 @@ namespace OldCarSounds
 
         public static bool loadGameOnMenu;
 
-        public List<PlayMakerFSM> fsmsAntiDeath;
-
-        private Stopwatch stopwatch;
-        private Material noSel;
+        private Stopwatch _stopwatch;
+        private Material _noSel;
 
         #endregion
     }

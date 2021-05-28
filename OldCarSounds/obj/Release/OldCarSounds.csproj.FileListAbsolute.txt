@@ -70,7 +70,6 @@ D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Release\Assembly-UnityScri
 D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Release\cInput.dll
 D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Release\ES2.dll
 D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Release\Ionic.Zip.dll
-D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Release\MSCLoader.dll
 D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Release\PlayMaker.dll
 D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Release\UnityEngine.dll
 D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Release\UnityEngine.UI.dll
