@@ -241,13 +241,16 @@ namespace OldCarSounds_Old
 
             if (ModLoader.GetCurrentScene() == CurrentScene.Game)
             {
-                float fps = (float) Math.Round(1f / Time.unscaledDeltaTime, 2);
-                float wrenchSize = FsmVariables.GlobalVariables.GetFsmFloat("ToolWrenchSize").Value;
-                GUI.Label(new Rect(0, 0, 1000, 20), $"FPS: {fps}");
-                GUI.Label(new Rect(0, 20, 1000, 20), $"Wrench size: {wrenchSize}");
-                GUI.Label(new Rect(0, 40, 1000, 20),
-                    $"Lake run current time: {_stopwatch.Elapsed.Minutes}:{_stopwatch.Elapsed.Seconds}:{_stopwatch.Elapsed.Milliseconds}");
-                GUI.Label(new Rect(0, 60, 1000, 20), "Lake run last time: ");
+                if (infoText)
+                {
+                    float fps = (float) Math.Round(1f / Time.unscaledDeltaTime, 2);
+                    float wrenchSize = FsmVariables.GlobalVariables.GetFsmFloat("ToolWrenchSize").Value;
+                    GUI.Label(new Rect(0, 0, 1000, 20), $"FPS: {fps}");
+                    GUI.Label(new Rect(0, 20, 1000, 20), $"Wrench size: {wrenchSize}");
+                    GUI.Label(new Rect(0, 40, 1000, 20),
+                        $"Lake run current time: {_stopwatch.Elapsed.Minutes}:{_stopwatch.Elapsed.Seconds}:{_stopwatch.Elapsed.Milliseconds}");
+                    GUI.Label(new Rect(0, 60, 1000, 20), "Lake run last time: ");
+                }
             }
         }
 
