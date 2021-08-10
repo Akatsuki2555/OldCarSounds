@@ -58,7 +58,6 @@ E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Release\OldCarSounds.cspro
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Release\OldCarSounds.dll
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Release\MSCLoader.dll
 E:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Release\NAudio.Flac.dll
-D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Release\OldCarSounds.csprojAssemblyReference.cache
 D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Release\OldCarSounds.Storage.resources
 D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Release\OldCarSounds.csproj.GenerateResource.cache
 D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Release\OldCarSounds.csproj.CoreCompileInputs.cache
@@ -87,3 +86,4 @@ D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Release\Mono.Security.dll
 D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Release\System.Runtime.Serialization.dll
 D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\bin\Release\MSCLoader.xml
 D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Release\OldCarSounds.csproj.CopyComplete
+D:\Programming\MSC Mods\OldCarSounds\OldCarSounds\obj\Release\OldCarSounds.csproj.AssemblyReference.cache

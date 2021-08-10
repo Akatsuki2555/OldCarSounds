@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using HutongGames.PlayMaker;
 using MSCLoader;
@@ -16,7 +17,7 @@ namespace OldCarSounds
         public override string ID => nameof(OldCarSounds);
         public override string Name => "Old Car Sounds";
         public override string Author => "MLDKYT";
-        public override string Version => "1.4.1";
+        public override string Version => "1.4.4";
 
         public override void MenuOnLoad()
         {
@@ -29,38 +30,54 @@ namespace OldCarSounds
 
         public override void OnLoad()
         {
+            if (File.Exists(Path.Combine(ModLoader.GetModSettingsFolder(this), "log.log")))
+            {
+                File.Delete(Path.Combine(ModLoader.GetModSettingsFolder(this), "log.log"));
+            }
+
             // Called once, when mod is loading after game is fully loaded
             PrintF("Starting Loading of OldCarSounds...", "load");
 
             // Load asset bundle
             PrintF("Loading AssetBundle", "load");
-            AssetBundle assetBundle = AssetBundle.CreateFromMemoryImmediate(Storage.AssetBundle1);
 
-            if (engineSoundsType == 2)
+            Assembly executingAssembly = Assembly.GetExecutingAssembly();
+            Stream stream = executingAssembly.GetManifestResourceStream("OldCarSounds.Resources.oldsound.unity3d");
+            byte[] shit = new byte[stream.Length];
+            stream.Read(shit, 0, shit.Length);
+
+            AssetBundle assetBundle = AssetBundle.CreateFromMemoryImmediate(shit);
+
+            if (engineSoundsTypeSettings.Value == 2)
             {
                 PrintF("Loading audio files for old builds...", "load");
-                clip1 = assetBundle.LoadAsset("car_idle") as AudioClip;
-                clip2 = assetBundle.LoadAsset("idle_sisa") as AudioClip;
+                clip2 = assetBundle.LoadAsset<AudioClip>("idle_sisa");
+                clip1 = assetBundle.LoadAsset<AudioClip>("idle");
             }
 
             // Assemble sounds
-            if (loadAssembleSound)
+            if (assembleSounds.Value)
             {
                 PrintF("Loading audio files for assembly sounds...", "load");
                 clip3 = assetBundle.LoadAsset("assemble") as AudioClip;
             }
 
+            _noSel = assetBundle.LoadAsset<Material>("nosel");
+
             // Music
-            if (oldRadioSongs)
+            if (oldRadioSongsSettings.Value)
             {
                 PrintF("Loading radio songs...", "load");
                 radio1 = assetBundle.LoadAsset("oldradio") as GameObject;
-                RadioCore.Clips.Add(assetBundle.LoadAsset("mustamies") as AudioClip);
-                RadioCore.Clips.Add(assetBundle.LoadAsset("oldradiosong") as AudioClip);
-                RadioCore.Clips.Add(assetBundle.LoadAsset("song2") as AudioClip);
-                RadioCore.Clips.Add(assetBundle.LoadAsset("song3") as AudioClip);
-                RadioCore.Clips.Add(assetBundle.LoadAsset("song4") as AudioClip);
-                RadioCore.Clips.Add(assetBundle.LoadAsset("song5") as AudioClip);
+
+                RadioCore.Clips.Add(assetBundle.LoadAsset<AudioClip>("mustamies"));
+                RadioCore.Clips.Add(assetBundle.LoadAsset<AudioClip>("oldradiosong"));
+                RadioCore.Clips.Add(assetBundle.LoadAsset<AudioClip>("song2"));
+                RadioCore.Clips.Add(assetBundle.LoadAsset<AudioClip>("song3"));
+                RadioCore.Clips.Add(assetBundle.LoadAsset<AudioClip>("song4"));
+                RadioCore.Clips.Add(assetBundle.LoadAsset<AudioClip>("song5"));
+                RadioCore.Clips.Add(assetBundle.LoadAsset<AudioClip>("song6"));
+                RadioCore.Clips.Add(assetBundle.LoadAsset<AudioClip>("song7"));
 
                 // Import custom songs
                 string path = Path.Combine(ModLoader.GetModAssetsFolder(this), "radiosongs");
@@ -74,19 +91,19 @@ namespace OldCarSounds
             }
 
             // Dashboard texture
-            if (oldDashTextures)
+            if (oldDashTexturesSettings.Value)
             {
                 PrintF("Loading black material for dashboard");
                 material1 = assetBundle.LoadAsset<Material>("black");
             }
 
             // Selection textures if chosen to
-            if (selectionSelection == 2)
+            if (selectionSelectionSettings.Value == 1)
             {
                 PrintF("Loading selection material");
                 selMaterial = assetBundle.LoadAsset<Material>("selection");
-                _noSel = assetBundle.LoadAsset<Material>("nosel");
             }
+
 
             // Unload the asset bundle to reduce memory usage
             // assets will remain loaded
@@ -97,12 +114,13 @@ namespace OldCarSounds
             satsuma = GameObject.Find("SATSUMA(557kg, 248)");
             // Add the component that does the load stuff
             PrintF("Adding component for Satsuma", "load");
-            satsuma.AddComponent<SatsumaOCS>();
+            satsuma.AddComponent<SatsumaOcs>();
 
             // Old RPM Gauge
-            if (oldRpmGauge)
+            if (oldRpmGaugeSettings.Value)
             {
-                GameObject object1 = Object.FindObjectsOfType<GameObject>().First(sdf => sdf.name.ToLower().Contains("rpm gauge"));
+                GameObject object1 = Object.FindObjectsOfType<GameObject>()
+                    .First(sdf => sdf.name.ToLower().Contains("rpm gauge"));
                 if (object1 != null)
                 {
                     object1.SetActive(true);
@@ -125,82 +143,48 @@ namespace OldCarSounds
 
         public override void ModSettings()
         {
-            modSettings.AddButton("nodeath", "How to get No death", "NoDeath", () => { Process.Start("https://mldkyt.github.io/stuff/OldCarSounds/health-mod-setup.html"); });
+            modSettings.AddButton("nodeath", "How to get No death", "NoDeath",
+                () => { Process.Start("https://mldkyt.github.io/stuff/OldCarSounds/health-mod-setup.html"); });
 
-            assembleSounds = modSettings.AddToggle("assemble", "Assemble sounds", loadAssembleSound);
-            noEngineOverrev = modSettings.AddToggle("overrev", "No engine overrev", noEngineOverRev);
-            oldRadioSongsSettings = modSettings.AddToggle("radio", "Old radio songs", oldRadioSongs);
-            oldDashTexturesSettings = modSettings.AddToggle("dash", "Old dash textures", oldDashTextures);
-            infoTextSettings = modSettings.AddToggle("info", "Info text", infoText);
-            disableKnobSoundsSettings = modSettings.AddToggle("sounds1", "Disable Knob sounds", disableKnobSounds);
-            disableFootSoundsSettings = modSettings.AddToggle("sounds2", "Disable Foot sounds", disableFootSounds);
-            disableDoorSoundsSettings = modSettings.AddToggle("sounds3", "Disable Door sounds", disableDoorSounds);
-            oldRpmGaugeSettings = modSettings.AddToggle("rpm", "Old RPM gauge", oldRpmGauge);
-            changeableWrenchSizeSettings = modSettings.AddToggle("wrenchsize", "Changeable Wrench Size", changeableWrenchSize);
+            assembleSounds = modSettings.AddToggle("assemble", "Assemble sounds", true);
+            oldRadioSongsSettings = modSettings.AddToggle("radio", "Old radio songs", true);
+            oldDashTexturesSettings = modSettings.AddToggle("dash", "Old dash textures", true);
+            infoTextSettings = modSettings.AddToggle("info", "Info text", true);
+            disableKnobSoundsSettings = modSettings.AddToggle("sounds1", "Disable Knob sounds", true);
+            disableFootSoundsSettings = modSettings.AddToggle("sounds2", "Disable Foot sounds", false);
+            disableDoorSoundsSettings = modSettings.AddToggle("sounds3", "Disable Door sounds", false);
+            oldRpmGaugeSettings = modSettings.AddToggle("rpm", "Old RPM gauge", true);
+            oldCrashSounds = modSettings.AddToggle("crash1", "Old crash sound", false);
+            oldRevving = modSettings.AddToggle("oldrev", "Old engine revving", true);
 
-            shiftDelaySelectionSettings = modSettings.AddRadioButtons("shiftDelay", "Shift delay", shiftDelaySelection, "Default", "Old", "None");
-            keySoundSelectionSettings = modSettings.AddRadioButtons("keysound", "Key sounds", keySoundSelection, "Default", "2016", "None");
-            selectionSelectionSettings = modSettings.AddRadioButtons("selection", "Selection visual", selectionSelection, "Default", "Green boxes");
-            engineSoundsTypeSettings = modSettings.AddRadioButtons("engineSounds", "Engine sounds", engineSoundsType, "Unchanged", "Old (2016)", "Old (2014)");
+            shiftDelaySelectionSettings =
+                modSettings.AddRadioButtons("shiftDelay", "Shift delay", 1, "Default", "Old", "None");
+            keySoundSelectionSettings =
+                modSettings.AddRadioButtons("keysound", "Key sounds", 2, "Default", "2016", "None");
+            selectionSelectionSettings =
+                modSettings.AddRadioButtons("selection", "Selection visual", 1, "Default", "Green boxes");
+            engineSoundsTypeSettings = modSettings.AddRadioButtons("engineSounds", "Engine sounds", 2, "Unchanged",
+                "Old (2016)", "Old (2014)");
 
             settingNumber1 = modSettings.AddBoolean("viewed", false);
 
             modSettings.AddButton("reload", "Reload settings", "Reload if in game", () =>
             {
                 loadGameOnMenu = true;
-                Application.LoadLevel(1);
+                ModPrompt.CreateContinueAbortPrompt("Your mod loader might bug out if you reload it this way.",
+                    "Warning", () => { Application.LoadLevel(1); });
             });
 
-            loadAssembleSound = assembleSounds.Value;
-            noEngineOverRev = noEngineOverrev.Value;
-            oldRadioSongs = oldRadioSongsSettings.Value;
-            oldDashTextures = oldDashTexturesSettings.Value;
-            infoText = infoTextSettings.Value;
-            disableDoorSounds = disableDoorSoundsSettings.Value;
-            disableFootSounds = disableFootSoundsSettings.Value;
-            disableKnobSounds = disableKnobSoundsSettings.Value;
-            oldRpmGauge = oldRpmGaugeSettings.Value;
-
-            shiftDelaySelection = shiftDelaySelectionSettings.Value;
-            keySoundSelection = keySoundSelectionSettings.Value;
-            selectionSelection = selectionSelectionSettings.Value;
-            engineSoundsType = engineSoundsTypeSettings.Value;
-
-            if (!settingNumber1)
+            modSettings.AddButton("musicButton", "How to add custom songs", () =>
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine("If you want to add custom songs, ");
                 sb.AppendLine("create a folder called \"radiosongs\"");
-                sb.AppendLine("in your assets folder.");
+                sb.AppendLine("in the assets folder");
+                sb.AppendLine("of the mod");
 
-                ModPrompt prompt = ModPrompt.CreateCustomPrompt();
-                prompt.AddButton("OK", () =>
-                {
-                    PrintF($"Path to Assets: {ModLoader.GetModAssetsFolder(this)}", "SYSTEM", true);
-                    settingNumber1.Value = true;
-                });
-                prompt.Title = "OldCarSounds";
-                prompt.Text = sb.ToString();
-            }
-        }
-
-        public override void ModSettingsClose()
-        {
-            loadAssembleSound = assembleSounds.Value;
-            noEngineOverRev = noEngineOverrev.Value;
-            oldRadioSongs = oldRadioSongsSettings.Value;
-            oldDashTextures = oldDashTexturesSettings.Value;
-            infoText = infoTextSettings.Value;
-            disableDoorSounds = disableDoorSoundsSettings.Value;
-            disableFootSounds = disableFootSoundsSettings.Value;
-            disableKnobSounds = disableKnobSoundsSettings.Value;
-            oldRpmGauge = oldRpmGaugeSettings.Value;
-            changeableWrenchSize = changeableWrenchSizeSettings.Value;
-
-            shiftDelaySelection = shiftDelaySelectionSettings.Value;
-            keySoundSelection = keySoundSelectionSettings.Value;
-            selectionSelection = selectionSelectionSettings.Value;
-            engineSoundsType = engineSoundsTypeSettings.Value;
+                ModPrompt.CreatePrompt(sb.ToString());
+            });
         }
 
         public override void OnGUI()
@@ -231,62 +215,65 @@ namespace OldCarSounds
         public override void Update()
         {
             // Color buttons green if looking at them
+
             if (!(Camera.main is null))
             {
                 foreach (RaycastHit hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 3f))
                 {
                     // Power knob
-                    if (!(SatsumaOCS.PowerKnob is null))
+                    if (!(SatsumaOcs.powerKnob is null))
                     {
-                        if (hit.collider.gameObject.name == SatsumaOCS.PowerKnob.name)
+                        if (hit.collider.gameObject.name == SatsumaOcs.powerKnob.name)
                         {
-                            if (selectionSelection == 1)
+                            if (selectionSelectionSettings.Value == 0)
                             {
                                 FsmVariables.GlobalVariables.GetFsmString("GUIinteraction").Value = "Radio";
                                 FsmVariables.GlobalVariables.GetFsmBool("GUIuse").Value = true;
                             }
 
-                            if (selectionSelection == 2) SatsumaOCS.PowerKnob.GetComponent<Renderer>().material = selMaterial;
+                            if (selectionSelectionSettings.Value == 1)
+                                SatsumaOcs.powerKnob.GetComponent<Renderer>().material = selMaterial;
 
                             break;
                         }
 
-                        SatsumaOCS.PowerKnob.GetComponent<Renderer>().material = _noSel;
+                        SatsumaOcs.powerKnob.GetComponent<Renderer>().material = _noSel;
                     }
 
                     // Volume knob
-                    if (!(SatsumaOCS.VolumeKnob is null))
+                    if (!(SatsumaOcs.volumeKnob is null))
                     {
-                        if (hit.collider.gameObject.name == SatsumaOCS.VolumeKnob.name)
+                        if (hit.collider.gameObject.name == SatsumaOcs.volumeKnob.name)
                         {
-                            if (selectionSelection == 1)
+                            if (selectionSelectionSettings.Value == 0)
                             {
                                 FsmVariables.GlobalVariables.GetFsmString("GUIinteraction").Value = "Volume";
                                 FsmVariables.GlobalVariables.GetFsmBool("GUIuse").Value = true;
                             }
 
-                            if (selectionSelection == 2) SatsumaOCS.VolumeKnob.GetComponent<Renderer>().material = selMaterial;
+                            if (selectionSelectionSettings.Value == 1)
+                                SatsumaOcs.volumeKnob.GetComponent<Renderer>().material = selMaterial;
 
                             float wheel = Input.GetAxis("Mouse ScrollWheel");
-                            if (wheel >= 0.01f) SatsumaOCS.radioCoreInstance.IncreaseVolume();
+                            if (wheel >= 0.01f) SatsumaOcs.radioCoreInstance.IncreaseVolume();
 
-                            if (wheel <= -0.01f) SatsumaOCS.radioCoreInstance.DecreaseVolume();
+                            if (wheel <= -0.01f) SatsumaOcs.radioCoreInstance.DecreaseVolume();
 
                             break;
                         }
 
-                        SatsumaOCS.VolumeKnob.GetComponent<Renderer>().material = _noSel;
+                        SatsumaOcs.volumeKnob.GetComponent<Renderer>().material = _noSel;
                     }
 
                     // Switch knob
-                    if (!(SatsumaOCS.SwitchKnob is null))
+                    if (!(SatsumaOcs.switchKnob is null))
                     {
-                        if (hit.collider.gameObject.name == SatsumaOCS.SwitchKnob.name)
+                        if (hit.collider.gameObject.name == SatsumaOcs.switchKnob.name)
                         {
-                            if (selectionSelection == 2)
-                                SatsumaOCS.SwitchKnob.GetComponent<Renderer>().material = selMaterial;
+                            if (selectionSelectionSettings.Value == 1)
+                                SatsumaOcs.switchKnob.GetComponent<Renderer>().material = selMaterial;
 
-                            if (selectionSelection == 1)
+                            if (selectionSelectionSettings.Value == 0)
                             {
                                 FsmVariables.GlobalVariables.GetFsmString("GUIinteraction").Value = "Next";
                                 FsmVariables.GlobalVariables.GetFsmBool("GUIuse").Value = true;
@@ -295,18 +282,18 @@ namespace OldCarSounds
                             break;
                         }
 
-                        SatsumaOCS.SwitchKnob.GetComponent<Renderer>().material = _noSel;
+                        SatsumaOcs.switchKnob.GetComponent<Renderer>().material = _noSel;
                     }
 
-                    if (!(SatsumaOCS.knobChoke is null) && !(SatsumaOCS.triggerChoke is null))
+                    if (!(SatsumaOcs.knobChoke is null) && !(SatsumaOcs.triggerChoke is null))
                     {
                         // Check other knobs
-                        if (hit.collider.gameObject == SatsumaOCS.triggerChoke)
+                        if (hit.collider.gameObject == SatsumaOcs.triggerChoke)
                         {
-                            if (selectionSelection == 2)
+                            if (selectionSelectionSettings.Value == 1)
                             {
                                 // Color is now green
-                                SatsumaOCS.knobChoke.GetComponent<Renderer>().material = selMaterial;
+                                SatsumaOcs.knobChoke.GetComponent<Renderer>().material = selMaterial;
                                 // Disable the little subtitle and stuff in center
                                 // of the screen.
                                 FsmVariables.GlobalVariables.GetFsmString("GUIinteraction").Value = "";
@@ -320,16 +307,16 @@ namespace OldCarSounds
 
                         // If we don't exit in the last if statement,
                         // this will run setting the color back to normal
-                        SatsumaOCS.knobChoke.GetComponent<Renderer>().material = material1;
+                        SatsumaOcs.knobChoke.GetComponent<Renderer>().material = material1;
                     }
 
-                    if (!(SatsumaOCS.knobHazards is null) && !(SatsumaOCS.triggerHazard is null))
+                    if (!(SatsumaOcs.knobHazards is null) && !(SatsumaOcs.triggerHazard is null))
                     {
-                        if (hit.collider.gameObject == SatsumaOCS.triggerHazard)
+                        if (hit.collider.gameObject == SatsumaOcs.triggerHazard)
                         {
-                            if (selectionSelection == 2)
+                            if (selectionSelectionSettings.Value == 1)
                             {
-                                SatsumaOCS.knobHazards.GetComponent<Renderer>().material = selMaterial;
+                                SatsumaOcs.knobHazards.GetComponent<Renderer>().material = selMaterial;
                                 FsmVariables.GlobalVariables.GetFsmString("GUIinteraction").Value = "";
                                 FsmVariables.GlobalVariables.GetFsmBool("GUIuse").Value = false;
                             }
@@ -337,16 +324,16 @@ namespace OldCarSounds
                             break;
                         }
 
-                        SatsumaOCS.knobHazards.GetComponent<Renderer>().material = material1;
+                        SatsumaOcs.knobHazards.GetComponent<Renderer>().material = material1;
                     }
 
-                    if (!(SatsumaOCS.knobLights is null) && !(SatsumaOCS.triggerLightModes is null))
+                    if (!(SatsumaOcs.knobLights is null) && !(SatsumaOcs.triggerLightModes is null))
                     {
-                        if (hit.collider.gameObject == SatsumaOCS.triggerLightModes)
+                        if (hit.collider.gameObject == SatsumaOcs.triggerLightModes)
                         {
-                            if (selectionSelection == 2)
+                            if (selectionSelectionSettings.Value == 1)
                             {
-                                SatsumaOCS.knobLights.GetComponent<Renderer>().material = selMaterial;
+                                SatsumaOcs.knobLights.GetComponent<Renderer>().material = selMaterial;
                                 FsmVariables.GlobalVariables.GetFsmString("GUIinteraction").Value = "";
                                 FsmVariables.GlobalVariables.GetFsmBool("GUIuse").Value = false;
                             }
@@ -354,16 +341,16 @@ namespace OldCarSounds
                             break;
                         }
 
-                        SatsumaOCS.knobLights.GetComponent<Renderer>().material = material1;
+                        SatsumaOcs.knobLights.GetComponent<Renderer>().material = material1;
                     }
 
-                    if (!(SatsumaOCS.knobWipers is null) && !(SatsumaOCS.triggerButtonWiper is null))
+                    if (!(SatsumaOcs.knobWipers is null) && !(SatsumaOcs.triggerButtonWiper is null))
                     {
-                        if (hit.collider.gameObject == SatsumaOCS.triggerButtonWiper)
+                        if (hit.collider.gameObject == SatsumaOcs.triggerButtonWiper)
                         {
-                            if (selectionSelection == 2)
+                            if (selectionSelectionSettings.Value == 1)
                             {
-                                SatsumaOCS.knobWipers.GetComponent<Renderer>().material = selMaterial;
+                                SatsumaOcs.knobWipers.GetComponent<Renderer>().material = selMaterial;
                                 FsmVariables.GlobalVariables.GetFsmString("GUIinteraction").Value = "";
                                 FsmVariables.GlobalVariables.GetFsmBool("GUIuse").Value = false;
                             }
@@ -371,29 +358,7 @@ namespace OldCarSounds
                             break;
                         }
 
-                        SatsumaOCS.knobWipers.GetComponent<Renderer>().material = material1;
-                    }
-
-                    if (changeableWrenchSize)
-                    {
-                        bool flag1 = Input.GetKeyDown(KeyCode.U);
-                        bool flag2 = Input.GetKeyDown(KeyCode.K);
-
-                        if (flag1)
-                        {
-                            FsmFloat fsmFloat = FsmVariables.GlobalVariables.FindFsmFloat("ToolWrenchSize");
-                            fsmFloat.Value += 0.1f;
-                            if (fsmFloat.Value > 1.5f) fsmFloat.Value = 1.5f;
-                            if (fsmFloat.Value < 0.5f) fsmFloat.Value = 0.5f;
-                        }
-
-                        if (flag2)
-                        {
-                            FsmFloat fsmFloat = FsmVariables.GlobalVariables.FindFsmFloat("ToolWrenchSize");
-                            fsmFloat.Value -= 0.1f;
-                            if (fsmFloat.Value > 1.5f) fsmFloat.Value = 1.5f;
-                            if (fsmFloat.Value < 0.5f) fsmFloat.Value = 0.5f;
-                        }
+                        SatsumaOcs.knobWipers.GetComponent<Renderer>().material = material1;
                     }
                 }
 
@@ -403,20 +368,20 @@ namespace OldCarSounds
                     // and we're aiming at the buttons
                     foreach (RaycastHit hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition),
                         3f))
-                        if (!(SatsumaOCS.radioCoreInstance is null))
+                        if (!(SatsumaOcs.radioCoreInstance is null))
                         {
                             // Aiming at the power knob
                             if (hit.collider.gameObject.name == "trigger_ocs_power1")
                             {
                                 // Toggle radio
-                                if (SatsumaOCS.radioCoreInstance.on) SatsumaOCS.radioCoreInstance.DisableRadio();
-                                else SatsumaOCS.radioCoreInstance.EnableRadio();
+                                if (SatsumaOcs.radioCoreInstance.on) SatsumaOcs.radioCoreInstance.DisableRadio();
+                                else SatsumaOcs.radioCoreInstance.EnableRadio();
                             }
 
                             // Aiming at the switch song knob
                             if (hit.collider.gameObject.name == "trigger_ocs_switch1")
                                 // Change song
-                                SatsumaOCS.radioCoreInstance.NextClip();
+                                SatsumaOcs.radioCoreInstance.NextClip();
                         }
             }
         }
@@ -438,12 +403,8 @@ namespace OldCarSounds
                 string modConfigFolder =
                     ModLoader.GetModSettingsFolder(ModLoader.LoadedMods.First(x => x.ID == nameof(OldCarSounds)));
                 StreamWriter writer = new StreamWriter(Path.Combine(modConfigFolder, "log.log"), true);
-                StringBuilder builder = new StringBuilder()
-                    .Append(DateTime.Now)
-                    .Append(" [")
-                    .Append(module.ToUpper())
-                    .Append("]: ")
-                    .Append(text);
+                StringBuilder builder = new StringBuilder().Append(DateTime.Now).Append(" [").Append(module.ToUpper())
+                    .Append("]: ").Append(text);
                 writer.WriteLine(builder.ToString());
                 writer.Close();
 
@@ -480,7 +441,7 @@ namespace OldCarSounds
             }
         }
 
-        public string GameObjectPath(GameObject go)
+        public static string GameObjectPath(GameObject go)
         {
             string s = "";
             GameObject temp1 = go;
@@ -504,7 +465,6 @@ namespace OldCarSounds
         public static AudioClip clip3;
 
         public static SettingToggle assembleSounds;
-        public static SettingToggle noEngineOverrev;
         public static SettingToggle oldRadioSongsSettings;
         public static SettingToggle oldDashTexturesSettings;
         public static SettingToggle infoTextSettings;
@@ -512,7 +472,8 @@ namespace OldCarSounds
         public static SettingToggle disableDoorSoundsSettings;
         public static SettingToggle disableFootSoundsSettings;
         public static SettingToggle oldRpmGaugeSettings;
-        public static SettingToggle changeableWrenchSizeSettings;
+        public static SettingToggle oldCrashSounds;
+        public static SettingToggle oldRevving;
 
         public static SettingRadioButtons shiftDelaySelectionSettings;
         public static SettingRadioButtons keySoundSelectionSettings;
@@ -521,23 +482,9 @@ namespace OldCarSounds
 
         public static SettingBoolean settingNumber1;
 
-        public static bool loadAssembleSound,
-            noEngineOverRev,
-            oldRadioSongs,
-            oldDashTextures,
-            infoText,
-            disableKnobSounds,
-            disableDoorSounds,
-            disableFootSounds,
-            oldRpmGauge,
-            changeableWrenchSize;
-
-        public static int shiftDelaySelection, keySoundSelection, selectionSelection, engineSoundsType;
-
         public static GameObject radio1, satsuma;
 
         public static Material material1, selMaterial;
-        public static bool oldDelay;
 
         public static bool loadGameOnMenu;
 

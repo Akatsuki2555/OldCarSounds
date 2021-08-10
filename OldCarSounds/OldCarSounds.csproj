@@ -56,12 +56,7 @@
       <Reference Include="PlayMaker, Version=1.6.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\PlayMaker.dll</HintPath>
       </Reference>
-      <Reference Include="System"/>
-      <Reference Include="System.Core"/>
-      <Reference Include="System.Xml.Linq"/>
-      <Reference Include="System.Data.DataSetExtensions"/>
-      <Reference Include="System.Data"/>
-      <Reference Include="System.Xml"/>
+      <Reference Include="System" />
       <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\UnityEngine.dll</HintPath>
       </Reference>
@@ -72,21 +67,13 @@
   <ItemGroup>
     <Compile Include="OldCarSounds.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Storage.cs" />
-      <Compile Include="Stuff\RadioCore.cs"/>
+      <Compile Include="Stuff\RadioCore.cs" />
     <Compile Include="Stuff\RPMGauge.cs" />
     <Compile Include="Stuff\SatsumaOCS.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Resources\oldsound.unity3d" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Storage.resx">
-      <DependentUpon>Storage.cs</DependentUpon>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Storage.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\oldsound.unity3d" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

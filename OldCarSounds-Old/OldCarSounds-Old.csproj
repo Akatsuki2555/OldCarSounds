@@ -56,20 +56,12 @@
   <ItemGroup>
     <Compile Include="OldCarSounds_Old.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Storage.cs" />
-    <Compile Include="Stuff\RadioCore.cs"/>
+    <Compile Include="Stuff\RadioCore.cs" />
     <Compile Include="Stuff\RPMGauge.cs" />
     <Compile Include="Stuff\SatsumaOCS.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Storage.resx">
-      <DependentUpon>Storage.cs</DependentUpon>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Storage.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\oldsound.unity3d" />
+    <EmbeddedResource Include="Resources\oldsound.unity3d" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

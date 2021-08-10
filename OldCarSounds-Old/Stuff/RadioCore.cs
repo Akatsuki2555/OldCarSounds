@@ -48,11 +48,17 @@ namespace OldCarSounds_Old.Stuff
                 _source.Play();
             }
 
-            // Check if on and adjust volume
-            if (on)
-                _source.volume = volume; // On
-            else
-                _source.volume = 0; // Off
+            // Check if camera is valid [JetBrains Rider suggestion to avoid exceptions]
+            if (!(Camera.main is null))
+            {
+                float volume1 = Mathf.Clamp((350 - Vector3.Distance(Camera.main.transform.position, transform.position)) / 350, 0, 1);
+                
+                // Check if on and adjust volume
+                if (@on)
+                    _source.volume = volume1; // On
+                else
+                    _source.volume = 0; // Off
+            }
         }
 
         public void EnableRadio()
