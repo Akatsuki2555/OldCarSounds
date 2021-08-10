@@ -22,7 +22,8 @@ namespace OldCarSounds_Old.Stuff
             b.parent = a.transform;
             b.position = a.transform.position + new Vector3(0.283f, 0.082f, 0.133f);
             b.rotation = a.transform.rotation;
-            b.localPosition = new Vector3(-0.27982f, 0.037146f, 0.0317383f);
+            b.localPosition = new Vector3(-0.28482f, 0.05314599f, 0.0317383f);
+            b.localScale = new Vector3(0.148f, 0.05f, 0.04300001f);
             // Add sound
             _source = gameObject.AddComponent<AudioSource>();
             _source.clip = Clips[0];
@@ -30,6 +31,12 @@ namespace OldCarSounds_Old.Stuff
             _source.Play();
             // Change the name to something friendly
             gameObject.name = "ocs_old_radio";
+
+            /*
+             *  localPosition = new Vector3 (-0.28482f, 0.05314599f, 0.0317383f);
+             *  localEulerAngles = new Vector3 (0f, 0f, 0f);
+             *  localScale = new Vector3 (0.148f, 0.05f, 0.04300001f);
+             */
         }
 
 
@@ -48,17 +55,11 @@ namespace OldCarSounds_Old.Stuff
                 _source.Play();
             }
 
-            // Check if camera is valid [JetBrains Rider suggestion to avoid exceptions]
-            if (!(Camera.main is null))
-            {
-                float volume1 = Mathf.Clamp((350 - Vector3.Distance(Camera.main.transform.position, transform.position)) / 350, 0, 1);
-                
-                // Check if on and adjust volume
-                if (@on)
-                    _source.volume = volume1; // On
-                else
-                    _source.volume = 0; // Off
-            }
+            // Check if on and adjust volume
+            if (on)
+                _source.volume = volume; // On
+            else
+                _source.volume = 0; // Off
         }
 
         public void EnableRadio()

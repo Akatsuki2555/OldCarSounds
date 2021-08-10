@@ -22,8 +22,8 @@ namespace OldCarSounds.Stuff
             b.parent = a.transform;
             b.position = a.transform.position + new Vector3(0.283f, 0.082f, 0.133f);
             b.rotation = a.transform.rotation;
-            b.localPosition = new Vector3 (-0.28482f, 0.05314599f, 0.0317383f);
-            b.localScale = new Vector3 (0.148f, 0.05f, 0.04300001f);
+            b.localPosition = new Vector3(-0.28482f, 0.05314599f, 0.0317383f);
+            b.localScale = new Vector3(0.148f, 0.05f, 0.04300001f);
             // Add sound
             _source = gameObject.AddComponent<AudioSource>();
             _source.clip = Clips[0];
@@ -31,12 +31,11 @@ namespace OldCarSounds.Stuff
             _source.Play();
             // Change the name to something friendly
             gameObject.name = "ocs_old_radio";
-            
+
             /*
              *  localPosition = new Vector3 (-0.28482f, 0.05314599f, 0.0317383f);
              *  localEulerAngles = new Vector3 (0f, 0f, 0f);
              *  localScale = new Vector3 (0.148f, 0.05f, 0.04300001f);
-             * 
              */
         }
 
@@ -47,7 +46,7 @@ namespace OldCarSounds.Stuff
 
             if (volume < 0f) volume = 0f;
 
-            // Check if it isn't playing
+            // Check if it's playing
             if (!_source.isPlaying)
             {
                 // Adjust clip
@@ -56,15 +55,11 @@ namespace OldCarSounds.Stuff
                 _source.Play();
             }
 
-            // Check if camera is valid [JetBrains Rider suggestion to avoid exceptions]
-            if (!(Camera.main is null))
-            {
-                // Check if on and adjust volume
-                if (@on)
-                    _source.volume = volume; // On
-                else
-                    _source.volume = 0; // Off
-            }
+            // Check if on and adjust volume
+            if (on)
+                _source.volume = volume; // On
+            else
+                _source.volume = 0; // Off
         }
 
         public void EnableRadio()
