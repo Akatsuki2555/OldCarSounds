@@ -1,7 +1,0 @@
-D:\Programming\MSC Mods\OldCarSounds\OldCarSounds-Old\bin\Debug\OldCarSounds-Old.dll
-D:\Programming\MSC Mods\OldCarSounds\OldCarSounds-Old\bin\Debug\OldCarSounds-Old.pdb
-D:\Programming\MSC Mods\OldCarSounds\OldCarSounds-Old\obj\Debug\OldCarSounds-Old.csproj.AssemblyReference.cache
-D:\Programming\MSC Mods\OldCarSounds\OldCarSounds-Old\obj\Debug\OldCarSounds-Old.csproj.CoreCompileInputs.cache
-D:\Programming\MSC Mods\OldCarSounds\OldCarSounds-Old\obj\Debug\OldCarSounds-Old.csproj.CopyComplete
-D:\Programming\MSC Mods\OldCarSounds\OldCarSounds-Old\obj\Debug\OldCarSounds-Old.dll
-D:\Programming\MSC Mods\OldCarSounds\OldCarSounds-Old\obj\Debug\OldCarSounds-Old.pdb

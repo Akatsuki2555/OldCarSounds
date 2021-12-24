@@ -1,0 +1,9 @@
+F:\MSC\OldCarSounds\bin\Release\OldCarSounds.dll
+F:\MSC\OldCarSounds\bin\Release\OldCarSounds.pdb
+F:\MSC\OldCarSounds\bin\Release\Health.dll
+F:\MSC\OldCarSounds\bin\Release\UnityEngine.UI.dll
+F:\MSC\OldCarSounds\obj\Release\OldCarSounds.csproj.AssemblyReference.cache
+F:\MSC\OldCarSounds\obj\Release\OldCarSounds.csproj.CoreCompileInputs.cache
+F:\MSC\OldCarSounds\obj\Release\OldCarSounds.csproj.CopyComplete
+F:\MSC\OldCarSounds\obj\Release\OldCarSounds.dll
+F:\MSC\OldCarSounds\obj\Release\OldCarSounds.pdb
