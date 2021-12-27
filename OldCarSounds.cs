@@ -10,7 +10,6 @@ using MSCLoader;
 using OldCarSounds.Stuff;
 using UnityEngine;
 
-
 namespace OldCarSounds {
     public class OldCarSounds : Mod {
         public override string ID => nameof(OldCarSounds); //Your mod ID (unique)
@@ -31,6 +30,8 @@ namespace OldCarSounds {
         }
 
         public override void OnLoad() {
+            UpdateAllSettings();
+
             if(File.Exists(Path.Combine(ModLoader.GetModSettingsFolder(this),"log.log"))) {
                 File.Delete(Path.Combine(ModLoader.GetModSettingsFolder(this),"log.log"));
             }
