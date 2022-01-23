@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using HealthMod;
 using HutongGames.PlayMaker;
 using MSCLoader;
 using OldCarSounds.Stuff;
@@ -20,7 +19,7 @@ namespace OldCarSounds {
         // Set this to true if you will be load custom assets from Assets folder.
         // This will create subfolder in Assets folder for your mod.
         public override bool UseAssetsFolder => true;
-        
+
         public SatsumaOcs satsumaOcs;
 
         public override void OnNewGame() {
@@ -30,7 +29,6 @@ namespace OldCarSounds {
         }
 
         public override void OnLoad() {
-            UpdateAllSettings();
 
             if(File.Exists(Path.Combine(ModLoader.GetModSettingsFolder(this),"log.log"))) {
                 File.Delete(Path.Combine(ModLoader.GetModSettingsFolder(this),"log.log"));
@@ -50,14 +48,14 @@ namespace OldCarSounds {
 
                 AssetBundle assetBundle = AssetBundle.CreateFromMemoryImmediate(shit);
 
-                if(EngineSoundsType == 2) {
+                if(EngineSoundsTypeSettings.Value.ToString() == "2") {
                     PrintF("Loading audio files from old builds...","load");
                     Clip2 = assetBundle.LoadAsset<AudioClip>("idle_sisa");
                     Clip1 = assetBundle.LoadAsset<AudioClip>("idle");
                 }
 
                 // Assemble sounds
-                if(LoadAssembleSound) {
+                if((bool) AssembleSounds.Value) {
                     PrintF("Loading audio files for assembly sounds...","load");
                     Clip3 = assetBundle.LoadAsset("assemble") as AudioClip;
                 }
@@ -65,7 +63,7 @@ namespace OldCarSounds {
                 _noSel = assetBundle.LoadAsset<Material>("nosel");
 
                 // Music
-                if(OldRadioSongs) {
+                if((bool) OldRadioSongsSettings.Value) {
                     PrintF("Loading radio songs...","load");
                     Radio1 = assetBundle.LoadAsset("oldradio") as GameObject;
 
@@ -94,13 +92,13 @@ namespace OldCarSounds {
                 }
 
                 // Dashboard texture
-                if(OldDashTextures) {
+                if((bool) OldDashTexturesSettings.Value) {
                     PrintF("Loading black material for dashboard");
                     Material1 = assetBundle.LoadAsset<Material>("black");
                 }
 
                 // Selection textures if chosen to
-                if(SelectionSelection) {
+                if((bool) SelectionSelectionSettings.Value) {
                     PrintF("Loading selection material");
                     SelMaterial = assetBundle.LoadAsset<Material>("selection");
                 }
@@ -118,10 +116,10 @@ namespace OldCarSounds {
             Satsuma = GameObject.Find("SATSUMA(557kg, 248)");
             // Add the component that does the load stuff
             PrintF("Adding component for Satsuma","load");
-            Satsuma.AddComponent<SatsumaOcs>();
+            satsumaOcs =  Satsuma.AddComponent<SatsumaOcs>();
 
             // Old RPM Gauge
-            if(OldRpmGauge) {
+            if((bool) OldRpmGaugeSettings.Value) {
                 GameObject object1 = UnityEngine.Object.FindObjectsOfType<GameObject>()
                     .First(sdf => sdf.name.ToLower().Contains("rpm gauge"));
                 object1.SetActive(true);
@@ -135,49 +133,24 @@ namespace OldCarSounds {
             // Start a stopwatch for the lake time info thing
             _stopwatch.Start();
 
-            // Some lag optimization from the HP mod
-            _hpStopwatch = new Stopwatch();
-            _hpStopwatch.Start();
-
             PrintF("Fully loaded!","load",true);
         }
 
-        public override bool SecondPass => true;
-
-        public override void SecondPassOnLoad() {
-            if (!ForceHealthModAlwaysFull) return;
-            // Check if mod installed
-            Mod mod = ModLoader.GetMod("Health");
-            if(mod != null) return;
-            _healthInstalled = false;
-            PrintF("You have enabled forcing of Health mod to full, when there is no Health mod installed.","ERR",true);
-        }
-
         public override void ModSettings() {
-            AssembleSounds = new Settings("assembleSounds","Assemble Sounds",false,UpdateAllSettings);
-            DisableDoorSoundsSettings = new Settings("doorSounds","Disable Door Sounds",false,UpdateAllSettings);
-            DisableFootSoundsSettings = new Settings("footSounds","Disable Foot Sounds",false,UpdateAllSettings);
-            DisableKnobSoundsSettings = new Settings("knobSounds","Disable Knob Sounds",false,UpdateAllSettings);
-            OldDashTexturesSettings = new Settings("oldDash","Old Dashboard",false,UpdateAllSettings);
-            InfoTextSettings = new Settings("info","Information Text",false,UpdateAllSettings);
-            OldRadioSongsSettings = new Settings("radio","Old Radio",false,UpdateAllSettings);
-            ShiftDelaySelectionSettings = new Settings("shiftDelay","Shift Delay Selection",0,UpdateAllSettings);
-            KeySoundSelectionSettings = new Settings("keySound","Key Sound Selection",0,UpdateAllSettings);
-            SelectionSelectionSettings = new Settings("selection","Green selections",false,UpdateAllSettings);
-            EngineSoundsTypeSettings = new Settings("sounds","Engine sound type",0,UpdateAllSettings);
-            OldRpmGaugeSettings = new Settings("rpmgauge","Old RPM Gauge",false,UpdateAllSettings);
-            ChangeableWrenchSizeSettings =
-                new Settings("wrenchsizechange","Changeable Wrench Size",false,UpdateAllSettings);
-            ButtonNoDeath = new Settings("nodeath","No Death",
-                () => { Process.Start("https://mldkyt.github.io/stuff/OldCarSounds/health-mod-setup.html"); });
-            OldDelaySettings = new Settings("oldrev","Old engine revving",false,UpdateAllSettings);
-            ForceHealthModAlwaysFullSettings = new Settings("healthforce","Force health mod to be always full health",
-                false,UpdateAllSettings);
-
-            UpdateAllSettings();
-
-            Settings.AddButton(this, ButtonNoDeath);
-
+            AssembleSounds = new Settings("assembleSounds","Assemble Sounds",false);
+            DisableDoorSoundsSettings = new Settings("doorSounds","Disable Door Sounds",false);
+            DisableFootSoundsSettings = new Settings("footSounds","Disable Foot Sounds",false);
+            DisableKnobSoundsSettings = new Settings("knobSounds","Disable Knob Sounds",false);
+            OldDashTexturesSettings = new Settings("oldDash","Old Dashboard",false);
+            InfoTextSettings = new Settings("info","Information Text",false);
+            OldRadioSongsSettings = new Settings("radio","Old Radio",false);
+            ShiftDelaySelectionSettings = new Settings("shiftDelay","Shift Delay Selection",0);
+            KeySoundSelectionSettings = new Settings("keySound","Key Sound Selection",0);
+            SelectionSelectionSettings = new Settings("selection","Green selections",false);
+            EngineSoundsTypeSettings = new Settings("sounds","Engine sound type",0);
+            OldRpmGaugeSettings = new Settings("rpmgauge","Old RPM Gauge",false);
+            OldDelaySettings = new Settings("oldrev","Old engine revving",false);
+            
             Settings.AddSlider(this, ShiftDelaySelectionSettings,0,2,new[] {
                 "No change",
                 "Build 172",
@@ -202,27 +175,8 @@ namespace OldCarSounds {
             Settings.AddCheckBox(this, InfoTextSettings);
             Settings.AddCheckBox(this, OldRadioSongsSettings);
             Settings.AddCheckBox(this, OldRpmGaugeSettings);
-            Settings.AddCheckBox(this, ChangeableWrenchSizeSettings);
-            Settings.AddText(this, "Please note that this setting requires Health to be installed.");
-            Settings.AddCheckBox(this, ForceHealthModAlwaysFullSettings);
-        }
-
-        private void UpdateAllSettings() {
-            LoadAssembleSound = (bool)AssembleSounds.GetValue();
-            DisableDoorSounds = (bool)DisableDoorSoundsSettings.GetValue();
-            DisableFootSounds = (bool)DisableFootSoundsSettings.GetValue();
-            DisableKnobSounds = (bool)DisableKnobSoundsSettings.GetValue();
-            OldDashTextures = (bool)OldDashTexturesSettings.GetValue();
-            InfoText = (bool)InfoTextSettings.GetValue();
-            OldRadioSongs = (bool)OldRadioSongsSettings.GetValue();
-            ShiftDelaySelection = int.Parse(ShiftDelaySelectionSettings.GetValue().ToString());
-            KeySoundSelection = int.Parse(KeySoundSelectionSettings.GetValue().ToString());
-            SelectionSelection = (bool)SelectionSelectionSettings.GetValue();
-            EngineSoundsType = int.Parse(EngineSoundsTypeSettings.GetValue().ToString());
-            OldRpmGauge = (bool)OldRpmGaugeSettings.GetValue();
-            ChangeableWrenchSize = (bool)ChangeableWrenchSizeSettings.GetValue();
-            OldDelay = (bool)OldDelaySettings.Value;
-            ForceHealthModAlwaysFull = (bool)ForceHealthModAlwaysFullSettings.Value;
+            Settings.AddText(this, "Health mod is now discontinued.");
+            Settings.AddText(this, "The setting under this text requires GodMode to be installed.");
         }
 
         public override void OnGUI() {
@@ -230,15 +184,9 @@ namespace OldCarSounds {
             // Not anything else
             // Called every render
 
-            // Render a box with information about settings.
-            if(ModLoader.GetCurrentScene() == CurrentScene.MainMenu) {
-                GUI.Box(new Rect(Screen.width - 210,10,200,40),"OldCarSounds 1.4");
-                GUI.Label(new Rect(Screen.width - 205,25,190,20),"Moved to Mod Settings");
-            }
-
             if(ModLoader.GetCurrentScene() != CurrentScene.Game) return;
-            if(!InfoText) return;
-            float fps = (float)Math.Round(1f / Time.unscaledDeltaTime,2);
+            if(!(bool) InfoTextSettings.Value) return;
+            float fps = (float)Math.Round(1f / Time.unscaledDeltaTime, 2);
             float wrenchSize = FsmVariables.GlobalVariables.GetFsmFloat("ToolWrenchSize").Value;
             GUI.Label(new Rect(0,0,1000,20),$"FPS: {fps}");
             GUI.Label(new Rect(0,20,1000,20),$"Wrench size: {wrenchSize}");
@@ -255,7 +203,7 @@ namespace OldCarSounds {
                 // Power knob
                 if(!(SatsumaOcs.powerKnob == null)) {
                     if(hit.collider.gameObject.name == SatsumaOcs.powerKnob.name) {
-                        if(!SelectionSelection) {
+                        if(!(bool) SelectionSelectionSettings.Value) {
                             FsmVariables.GlobalVariables.GetFsmString("GUIinteraction").Value = "Radio";
                             FsmVariables.GlobalVariables.GetFsmBool("GUIuse").Value = true;
                         }
@@ -270,7 +218,7 @@ namespace OldCarSounds {
                 // Volume knob
                 if(!(SatsumaOcs.volumeKnob == null)) {
                     if(hit.collider.gameObject.name == SatsumaOcs.volumeKnob.name) {
-                        if(!SelectionSelection) {
+                        if(!(bool) SelectionSelectionSettings.Value) {
                             FsmVariables.GlobalVariables.GetFsmString("GUIinteraction").Value = "Volume";
                             FsmVariables.GlobalVariables.GetFsmBool("GUIuse").Value = true;
                         }
@@ -292,7 +240,7 @@ namespace OldCarSounds {
                 // Switch knob
                 if(!(SatsumaOcs.switchKnob == null)) {
                     if(hit.collider.gameObject.name == SatsumaOcs.switchKnob.name) {
-                        if(SelectionSelection)
+                        if((bool) SelectionSelectionSettings.Value)
                             SatsumaOcs.switchKnob.GetComponent<Renderer>().material = SelMaterial;
 
                         else {
@@ -309,7 +257,7 @@ namespace OldCarSounds {
                 if(!(SatsumaOcs.knobChoke == null) && !(SatsumaOcs.triggerChoke == null)) {
                     // Check other knobs
                     if(hit.collider.gameObject == SatsumaOcs.triggerChoke) {
-                        if(SelectionSelection) {
+                        if((bool) SelectionSelectionSettings.Value) {
                             // Color is now green
                             SatsumaOcs.knobChoke.GetComponent<Renderer>().material = SelMaterial;
                             // Disable the little subtitle and stuff in center
@@ -330,7 +278,7 @@ namespace OldCarSounds {
 
                 if(!(SatsumaOcs.knobHazards == null) && !(SatsumaOcs.triggerHazard == null)) {
                     if(hit.collider.gameObject == SatsumaOcs.triggerHazard) {
-                        if(SelectionSelection) {
+                        if((bool) SelectionSelectionSettings.Value) {
                             SatsumaOcs.knobHazards.GetComponent<Renderer>().material = SelMaterial;
                             FsmVariables.GlobalVariables.GetFsmString("GUIinteraction").Value = "";
                             FsmVariables.GlobalVariables.GetFsmBool("GUIuse").Value = false;
@@ -344,7 +292,7 @@ namespace OldCarSounds {
 
                 if(!(SatsumaOcs.knobLights == null) && !(SatsumaOcs.triggerLightModes == null)) {
                     if(hit.collider.gameObject == SatsumaOcs.triggerLightModes) {
-                        if(SelectionSelection) {
+                        if((bool) SelectionSelectionSettings.Value) {
                             SatsumaOcs.knobLights.GetComponent<Renderer>().material = SelMaterial;
                             FsmVariables.GlobalVariables.GetFsmString("GUIinteraction").Value = "";
                             FsmVariables.GlobalVariables.GetFsmBool("GUIuse").Value = false;
@@ -358,7 +306,7 @@ namespace OldCarSounds {
 
                 if(!(SatsumaOcs.knobWipers == null) && !(SatsumaOcs.triggerButtonWiper == null)) {
                     if(hit.collider.gameObject == SatsumaOcs.triggerButtonWiper) {
-                        if(SelectionSelection) {
+                        if((bool) SelectionSelectionSettings.Value) {
                             SatsumaOcs.knobWipers.GetComponent<Renderer>().material = SelMaterial;
                             FsmVariables.GlobalVariables.GetFsmString("GUIinteraction").Value = "";
                             FsmVariables.GlobalVariables.GetFsmBool("GUIuse").Value = false;
@@ -368,25 +316,6 @@ namespace OldCarSounds {
                     }
 
                     SatsumaOcs.knobWipers.GetComponent<Renderer>().material = Material1;
-                }
-
-                if(!ChangeableWrenchSize) continue;
-                bool flag1 = Input.GetKeyDown(KeyCode.U);
-                bool flag2 = Input.GetKeyDown(KeyCode.K);
-
-                if (flag1) {
-                    FsmFloat fsmFloat = FsmVariables.GlobalVariables.FindFsmFloat("ToolWrenchSize");
-                    fsmFloat.Value += 0.1f;
-                    if(fsmFloat.Value > 1.5f) fsmFloat.Value = 1.5f;
-                    if(fsmFloat.Value < 0.5f) fsmFloat.Value = 0.5f;
-                }
-
-                if (!flag2) continue;
-                {
-                    FsmFloat fsmFloat = FsmVariables.GlobalVariables.FindFsmFloat("ToolWrenchSize");
-                    fsmFloat.Value -= 0.1f;
-                    if(fsmFloat.Value > 1.5f) fsmFloat.Value = 1.5f;
-                    if(fsmFloat.Value < 0.5f) fsmFloat.Value = 0.5f;
                 }
             }
 
@@ -417,11 +346,6 @@ namespace OldCarSounds {
 
 
             }
-
-            if (!ForceHealthModAlwaysFull || !_healthInstalled || _hpStopwatch.ElapsedMilliseconds <= 1000) return;
-            _hpStopwatch.Reset();
-            _hpStopwatch.Start();
-            Health.editHp(100);
         }
 
         /// <summary>
@@ -505,27 +429,7 @@ namespace OldCarSounds {
         public static Settings KeySoundSelectionSettings;
         public static Settings SelectionSelectionSettings;
         public static Settings EngineSoundsTypeSettings;
-        public static Settings ChangeableWrenchSizeSettings;
-        public static Settings ButtonNoDeath;
         public static Settings OldDelaySettings;
-        public static Settings ForceHealthModAlwaysFullSettings;
-        public static bool LoadAssembleSound;
-        public static bool OldRadioSongs;
-        public static bool OldDashTextures;
-        public static bool InfoText;
-        public static bool DisableKnobSounds;
-        public static bool DisableDoorSounds;
-        public static bool DisableFootSounds;
-        public static bool OldRpmGauge;
-        public static bool ChangeableWrenchSize;
-        public static int ShiftDelaySelection;
-        public static int KeySoundSelection;
-        public static bool SelectionSelection;
-        public static int EngineSoundsType;
-        public static bool OldDelay;
-        public static bool ForceHealthModAlwaysFull;
-
-        private bool _healthInstalled = true;
 
         public static AudioClip Clip1;
 
@@ -540,7 +444,6 @@ namespace OldCarSounds {
         public static bool LoadGameOnMenu;
 
         private Stopwatch _stopwatch;
-        private Stopwatch _hpStopwatch;
         private Material _noSel;
 
         #endregion

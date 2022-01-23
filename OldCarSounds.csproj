@@ -60,10 +60,6 @@
       <HintPath>E:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\ES2.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Health">
-      <HintPath>C:\Users\MLDKYT\Downloads\Health.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="HOTween">
       <HintPath>E:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\HOTween.dll</HintPath>
       <Private>False</Private>
@@ -88,12 +84,14 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>E:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>E:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
