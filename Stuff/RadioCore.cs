@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
+
 using UnityEngine;
 
-namespace OldCarSounds.Stuff
-{
-    public class RadioCore : MonoBehaviour
-    {
+namespace OldCarSounds.Stuff {
+
+    public class RadioCore : MonoBehaviour {
         public static List<AudioClip> Clips = new List<AudioClip>(); // Set later
 
         public float volume = 0.3f;
@@ -14,8 +14,8 @@ namespace OldCarSounds.Stuff
 
         private AudioSource _source;
 
-        private void Start()
-        {
+        private void Start() {
+
             // Set position and parent
             GameObject a = GameObject.Find("dashboard meters(Clone)");
             Transform b = transform;
@@ -24,6 +24,7 @@ namespace OldCarSounds.Stuff
             b.rotation = a.transform.rotation;
             b.localPosition = new Vector3(-0.28482f, 0.05314599f, 0.0317383f);
             b.localScale = new Vector3(0.148f, 0.05f, 0.04300001f);
+
             // Add sound
             _source = gameObject.AddComponent<AudioSource>();
             _source.clip = Clips[0];
@@ -31,6 +32,7 @@ namespace OldCarSounds.Stuff
             _source.maxDistance = 10;
             _source.spatialBlend = 1;
             _source.Play();
+
             // Change the name to something friendly
             gameObject.name = "ocs_old_radio(Clone)";
 
@@ -41,65 +43,74 @@ namespace OldCarSounds.Stuff
              */
         }
 
-
         private void Update() {
-            if (volume > 1f) volume = 1f;
-            if (volume < 0f) volume = 0f;
+            if (volume > 1f) {
+                volume = 1f;
+            }
+
+            if (volume < 0f) {
+                volume = 0f;
+            }
 
             // Check if it's playing
-            if (!_source.isPlaying)
-            {
+            if (!_source.isPlaying) {
+
                 // Adjust clip
                 _source.clip = Clips[_currentClipIndex];
+
                 // Play if not playing
                 _source.Play();
             }
 
             // Check if on and adjust volume
-            if (on)
+            if (on) {
                 _source.volume = volume; // On
-            else
+            }
+            else {
                 _source.volume = 0; // Off
+            }
         }
 
-        public void EnableRadio()
-        {
+        public void EnableRadio() {
             on = true;
-            if (_source.clip == null)
+            if (_source.clip == null) {
                 _source.clip = Clips[0];
+            }
+
             _source.volume = volume;
             _source.Play();
         }
 
-        public void DisableRadio()
-        {
+        public void DisableRadio() {
             on = false;
         }
 
-        public void IncreaseVolume()
-        {
+        public void IncreaseVolume() {
             volume += 0.05f;
-            if (volume > 1) volume = 1;
+            if (volume > 1) {
+                volume = 1;
+            }
         }
 
-        public void DecreaseVolume()
-        {
+        public void DecreaseVolume() {
             volume -= 0.05f;
-            if (volume < 0) volume = 0;
+            if (volume < 0) {
+                volume = 0;
+            }
         }
 
-
-        public void SetClip(int clip)
-        {
+        public void SetClip(int clip) {
             _source.clip = Clips[clip];
             _source.volume = 0;
             _source.Play();
         }
 
-        public void NextClip()
-        {
+        public void NextClip() {
             _currentClipIndex++;
-            if (_currentClipIndex > Clips.Count - 1) _currentClipIndex = 0;
+            if (_currentClipIndex > Clips.Count - 1) {
+                _currentClipIndex = 0;
+            }
+
             _source.clip = Clips[_currentClipIndex];
             _source.Play();
         }
