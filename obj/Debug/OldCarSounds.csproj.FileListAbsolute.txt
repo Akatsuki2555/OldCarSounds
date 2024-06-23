@@ -1,0 +1,6 @@
+F:\MSC\OldCarSounds\obj\Debug\OldCarSounds.csproj.AssemblyReference.cache
+F:\MSC\OldCarSounds\obj\Debug\OldCarSounds.csproj.CoreCompileInputs.cache
+F:\MSC\OldCarSounds\bin\Debug\OldCarSounds.dll
+F:\MSC\OldCarSounds\bin\Debug\OldCarSounds.pdb
+F:\MSC\OldCarSounds\obj\Debug\OldCarSounds.dll
+F:\MSC\OldCarSounds\obj\Debug\OldCarSounds.pdb

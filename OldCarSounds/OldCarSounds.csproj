@@ -1,103 +1,183 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Costura.Fody.5.2.0\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.5.2.0\build\Costura.Fody.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2CEAE666-CBA5-4FA6-AEE3-D6C5CFB2DE20}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OldCarSounds</RootNamespace>
-    <AssemblyName>OldCarSounds</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-UnityScript, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\Assembly-UnityScript.dll</HintPath>
-    </Reference>
-    <Reference Include="cInput, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\cInput.dll</HintPath>
-    </Reference>
-      <Reference Include="ES2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\ES2.dll</HintPath>
-      </Reference>
-      <Reference Include="Ionic.Zip, Version=1.9.1.5, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c">
-          <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\Ionic.Zip.dll</HintPath>
-      </Reference>
-      <Reference Include="MSCLoader, Version=1.0.8.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\Games\My.Summer.Car.v25.04.2021\mysummercar_Data\Managed\MSCLoader.dll</HintPath>
-      </Reference>
-      <Reference Include="MSCLoader, Version=1.0.9.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v25.04.2021\My.Summer.Car.v25.04.2021\mysummercar_Data\Managed\MSCLoader.dll</HintPath>
-      </Reference>
-      <Reference Include="PlayMaker, Version=1.6.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\PlayMaker.dll</HintPath>
-      </Reference>
-      <Reference Include="System"/>
-      <Reference Include="System.Core"/>
-      <Reference Include="System.Xml.Linq"/>
-      <Reference Include="System.Data.DataSetExtensions"/>
-      <Reference Include="System.Data"/>
-      <Reference Include="System.Xml"/>
-    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\..\Apps\Games\My Summer Car\My.Summer.Car.v17.11.2020.2\mysummercar_Data\Managed\UnityEngine.UI.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="OldCarSounds.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Storage.cs" />
-      <Compile Include="Stuff\RadioCore.cs"/>
-    <Compile Include="Stuff\RPMGauge.cs" />
-    <Compile Include="Stuff\SatsumaOCS.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="Resources\oldsound.unity3d" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Storage.resx">
-      <DependentUpon>Storage.cs</DependentUpon>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Storage.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them. For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{5238788A-0F71-4FF4-A85D-B536FA1D7163}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>OldCarSounds</RootNamespace>
+        <AssemblyName>OldCarSounds</AssemblyName>
+        <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Costura.Fody.5.2.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.5.2.0\build\Costura.Fody.props'))" />
-    <Error Condition="!Exists('..\packages\Costura.Fody.5.2.0\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.5.2.0\build\Costura.Fody.targets'))" />
-  </Target>
-  <Import Project="..\packages\Costura.Fody.5.2.0\build\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.5.2.0\build\Costura.Fody.targets')" />
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="0Harmony">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\0Harmony.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Assembly-CSharp">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\Assembly-CSharp.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Assembly-CSharp-firstpass">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Assembly-UnityScript">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\Assembly-UnityScript.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Assembly-UnityScript-firstpass">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\Assembly-UnityScript-firstpass.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Boo.Lang">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\Boo.Lang.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="cInput">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\cInput.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="ES2">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\ES2.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="HOTween">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\HOTween.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="I18N">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\I18N.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="I18N.CJK">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\I18N.CJK.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="I18N.MidEast">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\I18N.MidEast.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="I18N.Other">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\I18N.Other.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="I18N.Rare">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\I18N.Rare.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="I18N.West">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\I18N.West.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="INIFileParser">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\INIFileParser.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Ionic.Zip">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\Ionic.Zip.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Mono.Security">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\Mono.Security.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="MoodkieSecurity">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\MoodkieSecurity.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="MSCLoader">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\MSCLoader.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="MSCLoader.Preloader">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\MSCLoader.Preloader.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="NAudio">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\NAudio.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="NAudio.Flac">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\NAudio.Flac.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Newtonsoft.Json">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\Newtonsoft.Json.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="NVorbis">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\NVorbis.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="PlayMaker">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\PlayMaker.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Drawing">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\System.Drawing.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="System.Runtime.Serialization">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\System.Runtime.Serialization.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="System.Xml" />
+        <Reference Include="UnityEngine">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\UnityEngine.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.UI">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\UnityEngine.UI.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityScript.Lang">
+          <HintPath>F:\SteamLibrary\steamapps\common\My Summer Car\mysummercar_Data\Managed\UnityScript.Lang.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="OldCarSounds.cs" />
+        <Compile Include="Stuff\RadioCore.cs" />
+        <Compile Include="Stuff\RPMGauge.cs" />
+        <Compile Include="Stuff\SatsumaOcs.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="Resources\oldsound.unity3d" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+
 </Project>

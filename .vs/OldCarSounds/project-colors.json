@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "0e72669a-6a74-43e3-8fa9-ea1b8806d69b": {
+      "ProjectGuid": "0e72669a-6a74-43e3-8fa9-ea1b8806d69b",
+      "DisplayName": "OldCarSounds",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}

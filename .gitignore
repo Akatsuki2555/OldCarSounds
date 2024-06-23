@@ -1,2 +1,5 @@
-﻿/.idea/
-/OldCarSounds/obj
+/.idea/
+/OldCarSounds/bin/
+/OldCarSounds/obj/
+/OldCarSounds songs/
+/OldCarSounds.sln.DotSettings.user
