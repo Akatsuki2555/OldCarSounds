@@ -1,16 +1,28 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OldCarSounds", "OldCarSounds\OldCarSounds.csproj", "{5238788A-0F71-4FF4-A85D-B536FA1D7163}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32002.185
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OldCarSounds", "OldCarSounds.csproj", "{0E72669A-6A74-43E3-8FA9-EA1B8806D69B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		NoLog|Any CPU = NoLog|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5238788A-0F71-4FF4-A85D-B536FA1D7163}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5238788A-0F71-4FF4-A85D-B536FA1D7163}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5238788A-0F71-4FF4-A85D-B536FA1D7163}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5238788A-0F71-4FF4-A85D-B536FA1D7163}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E72669A-6A74-43E3-8FA9-EA1B8806D69B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E72669A-6A74-43E3-8FA9-EA1B8806D69B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E72669A-6A74-43E3-8FA9-EA1B8806D69B}.NoLog|Any CPU.ActiveCfg = NoLog|Any CPU
+		{0E72669A-6A74-43E3-8FA9-EA1B8806D69B}.NoLog|Any CPU.Build.0 = NoLog|Any CPU
+		{0E72669A-6A74-43E3-8FA9-EA1B8806D69B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E72669A-6A74-43E3-8FA9-EA1B8806D69B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5725C82C-3B54-4E93-946F-02A595067046}
 	EndGlobalSection
 EndGlobal
